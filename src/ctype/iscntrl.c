@@ -10,7 +10,4 @@ int __iscntrl_l(int c, locale_t l)
 	return iscntrl(c);
 }
 
-int iscntrl_l(int c, locale_t l)
-{
-    return __iscntrl_l(c, l);
-}
+weak_alias(__iscntrl_l, iscntrl_l);

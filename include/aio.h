@@ -25,7 +25,6 @@ struct aiocb {
 	ssize_t __ret;
 	off_t aio_offset;
 	void *__next, *__prev;
-	char __dummy4[32-2*sizeof(void *)];
 };
 
 #define AIO_CANCELED 0

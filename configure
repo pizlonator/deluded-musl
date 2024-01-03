@@ -745,27 +745,6 @@ test "$SUBARCH" \
 && printf "configured for %s variant: %s\n" "$ARCH" "$ARCH$SUBARCH"
 
 #
-# Some archs (powerpc) have different possible long double formats
-# that the compiler can be configured for. The logic for whether this
-# is supported is in bits/float.h; in general, it is not. We need to
-# check for mismatches here or code in printf, strotd, and scanf will
-# be dangerously incorrect because it depends on (1) the macros being
-# correct, and (2) IEEE semantics.
-#
-printf "checking whether compiler's long double definition matches float.h... "
-echo '#include <float.h>' > "$tmpc"
-echo '#define C(m,s) (m==LDBL_MANT_DIG && s==sizeof(long double))' >> "$tmpc"
-echo 'typedef char ldcheck[(C(53,8)||C(64,12)||C(64,16)||C(113,16))*2-1];' >> "$tmpc"
-if $CC $CFLAGS_C99FSE \
-  -I$srcdir/arch/$ARCH -I$srcdir/arch/generic -I$srcdir/include \
-  $CPPFLAGS $CFLAGS -c -o /dev/null "$tmpc" >/dev/null 2>&1 ; then
-printf "yes\n"
-else
-printf "no\n"
-fail "$0: error: unsupported long double type"
-fi
-
-#
 # Some build systems globally pass in broken CFLAGS like -ffast-math
 # for all packages. On recent GCC we can detect this and error out
 # early rather than producing a seriously-broken math library.

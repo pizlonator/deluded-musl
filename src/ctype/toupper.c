@@ -11,7 +11,4 @@ int __toupper_l(int c, locale_t l)
 	return toupper(c);
 }
 
-int toupper_l(int c, locale_t l)
-{
-    return __toupper_l(c, l);
-}
+weak_alias(__toupper_l, toupper_l);

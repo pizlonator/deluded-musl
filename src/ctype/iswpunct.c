@@ -16,7 +16,4 @@ int __iswpunct_l(wint_t c, locale_t l)
 	return iswpunct(c);
 }
 
-int iswpunct_l(wint_t c, locale_t l)
-{
-    return __iswpunct_l(c, l);
-}
+weak_alias(__iswpunct_l, iswpunct_l);

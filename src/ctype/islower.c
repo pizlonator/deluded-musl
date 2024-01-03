@@ -11,8 +11,4 @@ int __islower_l(int c, locale_t l)
 	return islower(c);
 }
 
-int islower_l(int c, locale_t l)
-{
-    return __islower_l(c, l);
-}
-
+weak_alias(__islower_l, islower_l);

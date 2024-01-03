@@ -11,8 +11,4 @@ int __iswblank_l(wint_t c, locale_t l)
 	return iswblank(c);
 }
 
-int iswblank_l(wint_t c, locale_t l)
-{
-    return __iswblank_l(c, l);
-}
-
+weak_alias(__iswblank_l, iswblank_l);

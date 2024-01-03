@@ -11,7 +11,4 @@ int __isprint_l(int c, locale_t l)
 	return isprint(c);
 }
 
-int isprint_l(int c, locale_t l)
-{
-    return __isprint_l(c, l);
-}
+weak_alias(__isprint_l, isprint_l);

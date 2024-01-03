@@ -13,7 +13,4 @@ int __iswcntrl_l(wint_t c, locale_t l)
 	return iswcntrl(c);
 }
 
-int iswcntrl_l(wint_t c, locale_t l)
-{
-    return __iswcntrl_l(c, l);
-}
+weak_alias(__iswcntrl_l, iswcntrl_l);

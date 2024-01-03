@@ -12,9 +12,4 @@ int __iswdigit_l(wint_t c, locale_t l)
 	return iswdigit(c);
 }
 
-int iswdigit_l(wint_t c, locale_t l)
-{
-    return __iswdigit_l(c, l);
-}
-
-
+weak_alias(__iswdigit_l, iswdigit_l);

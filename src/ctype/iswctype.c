@@ -71,12 +71,5 @@ wctype_t __wctype_l(const char *s, locale_t l)
 	return wctype(s);
 }
 
-int iswctype_l(wint_t c, wctype_t t, locale_t l)
-{
-    return __iswctype_l(c, t, l);
-}
-
-wctype_t wctype_l(const char* s, locale_t l)
-{
-    return __wctype_l(s, l);
-}
+weak_alias(__iswctype_l, iswctype_l);
+weak_alias(__wctype_l, wctype_l);

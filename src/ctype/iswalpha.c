@@ -18,7 +18,4 @@ int __iswalpha_l(wint_t c, locale_t l)
 	return iswalpha(c);
 }
 
-int iswalpha_l(wint_t c, locale_t l)
-{
-    return __iswalpha_l(c, l);
-}
+weak_alias(__iswalpha_l, iswalpha_l);

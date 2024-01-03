@@ -10,7 +10,4 @@ int __iswlower_l(wint_t c, locale_t l)
 	return iswlower(c);
 }
 
-int iswlower_l(wint_t c, locale_t l)
-{
-    return __iswlower_l(c, l);
-}
+weak_alias(__iswlower_l, iswlower_l);

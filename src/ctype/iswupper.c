@@ -10,7 +10,4 @@ int __iswupper_l(wint_t c, locale_t l)
 	return iswupper(c);
 }
 
-int iswupper_l(wint_t c, locale_t l)
-{
-    return __iswupper_l(c, l);
-}
+weak_alias(__iswupper_l, iswupper_l);

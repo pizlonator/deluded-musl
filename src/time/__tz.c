@@ -14,13 +14,13 @@
 #define realloc undef
 #define free undef
 
-long  timezone = 0;
-int   daylight = 0;
-char *tzname[2] = { 0, 0 };
+long  __timezone = 0;
+int   __daylight = 0;
+char *__tzname[2] = { 0, 0 };
 
-#define __timezone timezone
-#define __dayline daylight
-#define __tzname tzname
+weak_alias(__timezone, timezone);
+weak_alias(__daylight, daylight);
+weak_alias(__tzname, tzname);
 
 static char std_name[TZNAME_MAX+1];
 static char dst_name[TZNAME_MAX+1];
@@ -424,10 +424,7 @@ static void __tzset()
 	UNLOCK(lock);
 }
 
-void tzset(void)
-{
-    __rtzset();
-}
+weak_alias(__tzset, tzset);
 
 const char *__tm_to_tzname(const struct tm *tm)
 {

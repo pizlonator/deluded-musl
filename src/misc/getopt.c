@@ -8,10 +8,10 @@
 #include "stdio_impl.h"
 
 char *optarg;
-int optind=1, opterr=1, optopt, __optpos, optreset=0;
+int optind=1, opterr=1, optopt, __optpos, __optreset=0;
 
 #define optpos __optpos
-#define __optreset optreset
+weak_alias(__optreset, optreset);
 
 void __getopt_msg(const char *a, const char *b, const char *c, size_t l)
 {

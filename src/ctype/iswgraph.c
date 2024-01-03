@@ -11,7 +11,4 @@ int __iswgraph_l(wint_t c, locale_t l)
 	return iswgraph(c);
 }
 
-int iswgraph_l(wint_t c, locale_t l)
-{
-    return __iswgraph_l(c, l);
-}
+weak_alias(__iswgraph_l, iswgraph_l);

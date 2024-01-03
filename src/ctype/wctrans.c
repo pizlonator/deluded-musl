@@ -25,12 +25,5 @@ wint_t __towctrans_l(wint_t c, wctrans_t t, locale_t l)
 	return towctrans(c, t);
 }
 
-wctrans_t wctrans_l(const char* s, locale_t l)
-{
-    return __wctrans_l(s, l);
-}
-
-wint_t towctrans_l(wint_t c, wctrans_t t, locale_t l)
-{
-    return __towctrans_l(c, t, l);
-}
+weak_alias(__wctrans_l, wctrans_l);
+weak_alias(__towctrans_l, towctrans_l);

@@ -20,4 +20,7 @@ char *__crypt_r(const char *key, const char *salt, struct crypt_data *data)
 	return __crypt_des(key, salt, output);
 }
 
-weak_alias(__crypt_r, crypt_r);
+char *crypt_r(const char *key, const char *salt, struct crypt_data *data)
+{
+    return __crypt_r(key, salt, data);
+}

@@ -11,4 +11,7 @@ int __isalpha_l(int c, locale_t l)
 	return isalpha(c);
 }
 
-weak_alias(__isalpha_l, isalpha_l);
+int isalpha_l(int c, locale_t l)
+{
+    return __isalpha_l(c, l);
+}

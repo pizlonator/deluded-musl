@@ -11,4 +11,8 @@ int __isdigit_l(int c, locale_t l)
 	return isdigit(c);
 }
 
-weak_alias(__isdigit_l, isdigit_l);
+int isdigit_l(int c, locale_t l)
+{
+    return __isdigit_l(c, l);
+}
+

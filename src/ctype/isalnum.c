@@ -10,4 +10,7 @@ int __isalnum_l(int c, locale_t l)
 	return isalnum(c);
 }
 
-weak_alias(__isalnum_l, isalnum_l);
+int isalnum_l(int c, locale_t l)
+{
+    return __isalnum_l(c, l);
+}

@@ -10,4 +10,7 @@ int __iswxdigit_l(wint_t c, locale_t l)
 	return iswxdigit(c);
 }
 
-weak_alias(__iswxdigit_l, iswxdigit_l);
+int iswcdigit_l(wint_t c, locale_t l)
+{
+    return __iswxdigit_l(c, l);
+}

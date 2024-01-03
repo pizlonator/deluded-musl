@@ -10,4 +10,7 @@ int __ispunct_l(int c, locale_t l)
 	return ispunct(c);
 }
 
-weak_alias(__ispunct_l, ispunct_l);
+int ispunct_l(int c, locale_t l)
+{
+    return __ispunct_l(c, l);
+}

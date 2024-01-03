@@ -23,4 +23,7 @@ int __iswprint_l(wint_t c, locale_t l)
 	return iswprint(c);
 }
 
-weak_alias(__iswprint_l, iswprint_l);
+int iswprint_l(wint_t c, locale_t l)
+{
+    return iswprint_l(c, l);
+}

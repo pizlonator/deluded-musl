@@ -11,4 +11,7 @@ int __isgraph_l(int c, locale_t l)
 	return isgraph(c);
 }
 
-weak_alias(__isgraph_l, isgraph_l);
+int isgraph_l(int c, locale_t l)
+{
+    return __isgraph_l(c, l);
+}

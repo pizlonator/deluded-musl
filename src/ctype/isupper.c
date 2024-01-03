@@ -11,4 +11,7 @@ int __isupper_l(int c, locale_t l)
 	return isupper(c);
 }
 
-weak_alias(__isupper_l, isupper_l);
+int isupper_l(int c, locale_t l)
+{
+    return __isupper_l(c, l);
+}

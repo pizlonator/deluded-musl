@@ -5,6 +5,17 @@
 extern "C" {
 #endif
 
+#define FE_INVALID    1
+#define FE_DIVBYZERO  2
+#define FE_OVERFLOW   4
+#define FE_UNDERFLOW  8
+#define FE_INEXACT    16
+#define FE_ALL_EXCEPT 31
+#define FE_TONEAREST  0
+#define FE_DOWNWARD   32
+#define FE_UPWARD     64
+#define FE_TOWARDZERO 96
+
 #include <bits/fenv.h>
 
 int feclearexcept(int);

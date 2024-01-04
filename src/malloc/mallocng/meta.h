@@ -17,7 +17,7 @@ extern const uint16_t size_classes[];
 struct group {
 	struct meta *meta;
 	unsigned char active_idx:5;
-	char pad[UNIT - sizeof(struct meta *) - 1];
+        //char pad[UNIT - sizeof(struct meta *) - 1];
 	unsigned char storage[];
 };
 

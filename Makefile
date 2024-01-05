@@ -168,6 +168,9 @@ lib/libc.so: $(LOBJS) $(LDSO_OBJS)
 lib/libdeluded_c.dylib: $(LOBJS) $(LDSO_OBJS)
 	xcrun $(CC) $(CFLAGS_ALL) $(LDFLAGS_ALL) -dynamiclib \
 	-o $@ $(LOBJS) $(LDSO_OBJS) $(LIBCC) -nostdlib
+	mkdir -p ../deluge/build/test
+	cp lib/libdeluded_c.dylib ../deluge/build
+	cp lib/libdeluded_c.dylib ../deluge/build/test
 
 lib/libc.a: $(AOBJS)
 	rm -f $@

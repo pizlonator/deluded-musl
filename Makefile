@@ -241,6 +241,8 @@ endif
 
 clean:
 	rm -rf obj lib
+	rm -f ../deluge/build/libdeluded_c.dylib
+	rm -f ../deluge/build/test/libdeluded_c.dylib
 
 distclean: clean
 	rm -f config.mak

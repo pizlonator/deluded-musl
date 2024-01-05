@@ -1,4 +1,5 @@
 #include <string.h>
+#include <stdfil.h>
 
 size_t strnlen(const char *s, size_t n)
 {

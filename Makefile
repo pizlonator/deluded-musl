@@ -66,7 +66,8 @@ EMPTY_LIB_NAMES = m rt pthread crypt util xnet resolv dl
 EMPTY_LIBS = $(EMPTY_LIB_NAMES:%=lib/lib%.a)
 CRT_LIBS = $(addprefix lib/,$(notdir $(CRT_OBJS)))
 STATIC_LIBS = lib/libc.a
-SHARED_LIBS = lib/libc.so
+#SHARED_LIBS = lib/libc.so
+SHARED_LIBS = lib/libc.dylib
 TOOL_LIBS = lib/musl-gcc.specs
 ALL_LIBS = $(SHARED_LIBS) $(EMPTY_LIBS) $(TOOL_LIBS)
 ALL_TOOLS = obj/musl-gcc
@@ -162,6 +163,10 @@ obj/%.lo: $(srcdir)/%.c $(GENH) $(IMPH)
 lib/libc.so: $(LOBJS) $(LDSO_OBJS)
 	$(CC) $(CFLAGS_ALL) $(LDFLAGS_ALL) -nostdlib -shared \
 	-Wl,-e,_dlstart -o $@ $(LOBJS) $(LDSO_OBJS) $(LIBCC)
+
+lib/libc.dylib: $(LOBJS) $(LDSO_OBJS)
+	xcrun $(CC) $(CFLAGS_ALL) $(LDFLAGS_ALL) -dylib \
+	-o $@ $(LOBJS) $(LDSO_OBJS) $(LIBCC) -L../libpas/build -ldeluge
 
 lib/libc.a: $(AOBJS)
 	rm -f $@

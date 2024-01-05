@@ -310,7 +310,7 @@ int __pthread_create(pthread_t *restrict res, const pthread_attr_t *restrict att
 		}
 	}
 
-	new = __copy_tls(tsd - libc.tls_size);
+	new = NULL; //__copy_tls(tsd - libc.tls_size); FIXME
 	new->map_base = map;
 	new->map_size = size;
 	new->stack = stack;

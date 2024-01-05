@@ -10,8 +10,6 @@
 static void dummy(void) {}
 weak_alias(dummy, _init);
 
-extern weak hidden void (*const __init_array_start)(void), (*const __init_array_end)(void);
-
 static void dummy1(void *p) {}
 weak_alias(dummy1, __init_ssp);
 
@@ -36,7 +34,7 @@ void __init_libc(char **envp, char *pn)
 	__progname = __progname_full = pn;
 	for (i=0; pn[i]; i++) if (pn[i]=='/') __progname = pn+i+1;
 
-	__init_tls(aux);
+	//__init_tls(aux); FIXME
 	__init_ssp((void *)aux[AT_RANDOM]);
 
 	if (aux[AT_UID]==aux[AT_EUID] && aux[AT_GID]==aux[AT_EGID]
@@ -59,12 +57,7 @@ void __init_libc(char **envp, char *pn)
 static void libc_start_init(void)
 {
 	_init();
-	uintptr_t a = (uintptr_t)&__init_array_start;
-	for (; a<(uintptr_t)&__init_array_end; a+=sizeof(void(*)()))
-		(*(void (**)(void))a)();
 }
-
-weak_alias(libc_start_init, __libc_start_init);
 
 typedef int lsm2_fn(int (*)(int,char **,char **), int, char **);
 static lsm2_fn libc_start_main_stage2;
@@ -89,7 +82,6 @@ int __libc_start_main(int (*main)(int,char **,char **), int argc, char **argv,
 static int libc_start_main_stage2(int (*main)(int,char **,char **), int argc, char **argv)
 {
 	char **envp = argv+argc+1;
-	__libc_start_init();
 
 	/* Pass control to the application */
 	exit(main(argc, argv, envp));

@@ -68,7 +68,7 @@ EMPTY_LIBS = $(EMPTY_LIB_NAMES:%=lib/lib%.a)
 CRT_LIBS = $(addprefix lib/,$(notdir $(CRT_OBJS)))
 STATIC_LIBS = lib/libc.a
 #SHARED_LIBS = lib/libc.so
-SHARED_LIBS = lib/libdeluded_c.dylib
+SHARED_LIBS = ../deluge/build/libdeluded_c.dylib ../deluge/build/test/libdeluded_c.dylib
 TOOL_LIBS = lib/musl-gcc.specs
 ALL_LIBS = $(SHARED_LIBS) $(EMPTY_LIBS) $(TOOL_LIBS)
 ALL_TOOLS = obj/musl-gcc
@@ -165,12 +165,13 @@ lib/libc.so: $(LOBJS) $(LDSO_OBJS)
 	$(CC) $(CFLAGS_ALL) $(LDFLAGS_ALL) -nostdlib -shared \
 	-Wl,-e,_dlstart -o $@ $(LOBJS) $(LDSO_OBJS) $(LIBCC)
 
-lib/libdeluded_c.dylib: $(LOBJS) $(LDSO_OBJS)
+../deluge/build/libdeluded_c.dylib: $(LOBJS) $(LDSO_OBJS)
 	xcrun $(CC) $(CFLAGS_ALL) $(LDFLAGS_ALL) -dynamiclib \
 	-o $@ $(LOBJS) $(LDSO_OBJS) $(LIBCC) -nostdlib
-	mkdir -p ../deluge/build/test
-	cp lib/libdeluded_c.dylib ../deluge/build
-	cp lib/libdeluded_c.dylib ../deluge/build/test
+
+../deluge/build/test/libdeluded_c.dylib: $(LOBJS) $(LDSO_OBJS)
+	xcrun $(CC) $(CFLAGS_ALL) $(LDFLAGS_ALL) -dynamiclib \
+	-o $@ $(LOBJS) $(LDSO_OBJS) $(LIBCC) -nostdlib
 
 lib/libc.a: $(AOBJS)
 	rm -f $@

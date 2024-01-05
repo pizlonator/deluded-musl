@@ -6,6 +6,7 @@
 #include "syscall.h"
 #include "atomic.h"
 #include "libc.h"
+#include <errno.h>
 #include <stdfil.h>
 
 static void dummy(void) {}
@@ -16,12 +17,20 @@ weak_alias(dummy1, __init_ssp);
 
 #define AUX_CNT 38
 
+static void errno_handler(int errno_value)
+{
+    errno = errno_value;
+}
+
 #ifdef __GNUC__
 __attribute__((__noinline__))
 #endif
 void __init_libc(char **envp, char *pn)
 {
 	size_t i, *auxv, aux[AUX_CNT] = { 0 };
+
+        zregister_sys_errno_handler(errno_handler);
+        
 	__environ = envp;
 	for (i=0; envp[i]; i++);
 	libc.auxv = auxv = NULL;

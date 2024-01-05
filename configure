@@ -447,6 +447,7 @@ esac
 if test "$optimize" = no ; then :
 else
 tryflag CFLAGS_AUTO -O2
+tryflag CFLAGS_AUTO -g
 tryflag CFLAGS_AUTO -fno-align-jumps
 tryflag CFLAGS_AUTO -fno-align-functions
 tryflag CFLAGS_AUTO -fno-align-loops

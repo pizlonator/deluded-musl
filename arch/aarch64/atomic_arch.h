@@ -14,12 +14,6 @@ static inline int a_sc(volatile int *p, int v)
 	return !r;
 }
 
-#define a_barrier a_barrier
-static inline void a_barrier()
-{
-	__asm__ __volatile__ ("dmb ish" : : : "memory");
-}
-
 #define a_cas a_cas
 static inline int a_cas(volatile int *p, int t, int s)
 {
@@ -27,7 +21,7 @@ static inline int a_cas(volatile int *p, int t, int s)
 	do {
 		old = a_ll(p);
 		if (old != t) {
-			a_barrier();
+			zfence();
 			break;
 		}
 	} while (!a_sc(p, s));
@@ -57,7 +51,7 @@ static inline void *a_cas_p(volatile void *p, void *t, void *s)
 	do {
 		old = a_ll_p(p);
 		if (old != t) {
-			a_barrier();
+			zfence();
 			break;
 		}
 	} while (!a_sc_p(p, s));

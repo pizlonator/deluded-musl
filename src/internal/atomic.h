@@ -3,7 +3,13 @@
 
 #include <stdint.h>
 
+#include <stdfil.h>
 #include "atomic_arch.h"
+
+#ifndef a_barrier
+#define a_barrier a_barrier
+static inline void a_barrier(void) { zfence(); }
+#endif
 
 #ifdef a_ll
 

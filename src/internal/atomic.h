@@ -11,26 +11,12 @@
 static inline void a_barrier(void) { zfence(); }
 #endif
 
-#ifdef a_ll
-
-#ifndef a_pre_llsc
-#define a_pre_llsc()
-#endif
-
-#ifndef a_post_llsc
-#define a_post_llsc()
-#endif
-
 #ifndef a_cas
 #define a_cas a_cas
 static inline int a_cas(volatile int *p, int t, int s)
 {
-	int old;
-	a_pre_llsc();
-	do old = a_ll(p);
-	while (old==t && !a_sc(p, s));
-	a_post_llsc();
-	return old;
+    __c11_atomic_compare_exchange_strong((_Atomic int*)p, &t, s, __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST);
+    return t;
 }
 #endif
 
@@ -38,12 +24,7 @@ static inline int a_cas(volatile int *p, int t, int s)
 #define a_swap a_swap
 static inline int a_swap(volatile int *p, int v)
 {
-	int old;
-	a_pre_llsc();
-	do old = a_ll(p);
-	while (!a_sc(p, v));
-	a_post_llsc();
-	return old;
+    return __c11_atomic_exchange((_Atomic int*)p, v, __ATOMIC_SEQ_CST);
 }
 #endif
 
@@ -51,12 +32,7 @@ static inline int a_swap(volatile int *p, int v)
 #define a_fetch_add a_fetch_add
 static inline int a_fetch_add(volatile int *p, int v)
 {
-	int old;
-	a_pre_llsc();
-	do old = a_ll(p);
-	while (!a_sc(p, (unsigned)old + v));
-	a_post_llsc();
-	return old;
+    return __c11_atomic_fetch_add((_Atomic int*)p, v, __ATOMIC_SEQ_CST);
 }
 #endif
 
@@ -64,12 +40,7 @@ static inline int a_fetch_add(volatile int *p, int v)
 #define a_fetch_and a_fetch_and
 static inline int a_fetch_and(volatile int *p, int v)
 {
-	int old;
-	a_pre_llsc();
-	do old = a_ll(p);
-	while (!a_sc(p, old & v));
-	a_post_llsc();
-	return old;
+    return __c11_atomic_fetch_and((_Atomic int*)p, v, __ATOMIC_SEQ_CST);
 }
 #endif
 
@@ -77,15 +48,8 @@ static inline int a_fetch_and(volatile int *p, int v)
 #define a_fetch_or a_fetch_or
 static inline int a_fetch_or(volatile int *p, int v)
 {
-	int old;
-	a_pre_llsc();
-	do old = a_ll(p);
-	while (!a_sc(p, old | v));
-	a_post_llsc();
-	return old;
+    return __c11_atomic_fetch_or((_Atomic int*)p, v, __ATOMIC_SEQ_CST);
 }
-#endif
-
 #endif
 
 #ifdef a_ll_p

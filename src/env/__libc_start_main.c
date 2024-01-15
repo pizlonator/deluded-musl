@@ -22,6 +22,8 @@ static void errno_handler(int errno_value)
     errno = errno_value;
 }
 
+hidden void __dl_initerror(void);
+
 #ifdef __GNUC__
 __attribute__((__noinline__))
 #endif
@@ -30,6 +32,8 @@ void __init_libc(char **envp, char *pn)
 	size_t i, *auxv, aux[AUX_CNT] = { 0 };
 
         zregister_sys_errno_handler(errno_handler);
+
+        __dl_initerror();
         
 	__environ = envp;
 	for (i=0; envp[i]; i++);

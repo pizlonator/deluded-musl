@@ -1,8 +1,12 @@
 #include "pthread_impl.h"
+#include <stdfil.h>
 
 int pthread_mutex_init(pthread_mutex_t *restrict m, const pthread_mutexattr_t *restrict a)
 {
-	*m = (pthread_mutex_t){0};
-	if (a) m->_m_type = a->__attr;
-	return 0;
+    ZASSERT(!a);
+    void* zm = zthread_mutex_create();
+    if (!zm)
+        return errno;
+    m->__p = zm;
+    return 0;
 }

@@ -2,6 +2,7 @@
 #include <fcntl.h>
 #include <string.h>
 #include <errno.h>
+#include <stdfil.h>
 
 FILE *fopen(const char *restrict filename, const char *restrict mode)
 {
@@ -18,7 +19,7 @@ FILE *fopen(const char *restrict filename, const char *restrict mode)
 	/* Compute the flags to pass to open() */
 	flags = __fmodeflags(mode);
 
-	fd = sys_open(filename, flags, 0666);
+	fd = zsys_open(filename, flags, 0666);
 	if (fd < 0) return 0;
 	if (flags & O_CLOEXEC)
 		__syscall(SYS_fcntl, fd, F_SETFD, FD_CLOEXEC);

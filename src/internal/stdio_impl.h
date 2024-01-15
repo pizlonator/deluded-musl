@@ -45,6 +45,7 @@ struct _IO_FILE {
 	off_t shlim, shcnt;
 	FILE *prev_locked, *next_locked;
 	struct __locale_struct *locale;
+    unsigned char trailing[1];
 };
 
 extern hidden FILE *volatile __stdin_used;

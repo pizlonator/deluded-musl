@@ -28,6 +28,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdfil.h>
 
 #include "atomic.h"
 #define ntz(x) a_ctz_l((x))
@@ -42,9 +43,8 @@ static inline int pntz(size_t p[2]) {
 	return 0;
 }
 
-static void cycle(size_t width, unsigned char* ar[], int n)
+static void cycle(size_t width, unsigned char* ar[], int n, void* tmp)
 {
-	unsigned char tmp[256];
 	size_t l;
 	int i;
 
@@ -53,14 +53,10 @@ static void cycle(size_t width, unsigned char* ar[], int n)
 	}
 
 	ar[n] = tmp;
-	while(width) {
-		l = sizeof(tmp) < width ? sizeof(tmp) : width;
-		memcpy(ar[n], ar[0], l);
-		for(i = 0; i < n; i++) {
-			memcpy(ar[i], ar[i + 1], l);
-			ar[i] += l;
-		}
-		width -= l;
+	memcpy(ar[n], ar[0], width);
+	for(i = 0; i < n; i++) {
+		memcpy(ar[i], ar[i + 1], width);
+		ar[i] += width;
 	}
 }
 
@@ -89,7 +85,7 @@ static inline void shr(size_t p[2], int n)
 	p[1] >>= n;
 }
 
-static void sift(unsigned char *head, size_t width, cmpfun cmp, void *arg, int pshift, size_t lp[])
+static void sift(unsigned char *head, size_t width, cmpfun cmp, void *arg, int pshift, size_t lp[], void* tmp)
 {
 	unsigned char *rt, *lf;
 	unsigned char *ar[14 * sizeof(size_t) + 1];
@@ -113,10 +109,10 @@ static void sift(unsigned char *head, size_t width, cmpfun cmp, void *arg, int p
 			pshift -= 2;
 		}
 	}
-	cycle(width, ar, i);
+	cycle(width, ar, i, tmp);
 }
 
-static void trinkle(unsigned char *head, size_t width, cmpfun cmp, void *arg, size_t pp[2], int pshift, int trusty, size_t lp[])
+static void trinkle(unsigned char *head, size_t width, cmpfun cmp, void *arg, size_t pp[2], int pshift, int trusty, size_t lp[], void* tmp)
 {
 	unsigned char *stepson,
 	              *rt, *lf;
@@ -150,8 +146,8 @@ static void trinkle(unsigned char *head, size_t width, cmpfun cmp, void *arg, si
 		trusty = 0;
 	}
 	if(!trusty) {
-		cycle(width, ar, i);
-		sift(head, width, cmp, arg, pshift, lp);
+                cycle(width, ar, i, tmp);
+		sift(head, width, cmp, arg, pshift, lp, tmp);
 	}
 }
 
@@ -163,8 +159,12 @@ void __qsort_r(void *base, size_t nel, size_t width, cmpfun cmp, void *arg)
 	size_t p[2] = {1, 0};
 	int pshift = 1;
 	int trail;
+        void* tmp;
 
 	if (!size) return;
+
+        tmp = zalloc_with_type(zgettypeslice(base, width), width);
+        ZASSERT(tmp);
 
 	head = base;
 	high = head + size - width;
@@ -174,14 +174,14 @@ void __qsort_r(void *base, size_t nel, size_t width, cmpfun cmp, void *arg)
 
 	while(head < high) {
 		if((p[0] & 3) == 3) {
-			sift(head, width, cmp, arg, pshift, lp);
+			sift(head, width, cmp, arg, pshift, lp, tmp);
 			shr(p, 2);
 			pshift += 2;
 		} else {
 			if(lp[pshift - 1] >= high - head) {
-				trinkle(head, width, cmp, arg, p, pshift, 0, lp);
+                                trinkle(head, width, cmp, arg, p, pshift, 0, lp, tmp);
 			} else {
-				sift(head, width, cmp, arg, pshift, lp);
+				sift(head, width, cmp, arg, pshift, lp, tmp);
 			}
 
 			if(pshift == 1) {
@@ -197,7 +197,7 @@ void __qsort_r(void *base, size_t nel, size_t width, cmpfun cmp, void *arg)
 		head += width;
 	}
 
-	trinkle(head, width, cmp, arg, p, pshift, 0, lp);
+	trinkle(head, width, cmp, arg, p, pshift, 0, lp, tmp);
 
 	while(pshift != 1 || p[0] != 1 || p[1] != 0) {
 		if(pshift <= 1) {
@@ -209,13 +209,15 @@ void __qsort_r(void *base, size_t nel, size_t width, cmpfun cmp, void *arg)
 			pshift -= 2;
 			p[0] ^= 7;
 			shr(p, 1);
-			trinkle(head - lp[pshift] - width, width, cmp, arg, p, pshift + 1, 1, lp);
+			trinkle(head - lp[pshift] - width, width, cmp, arg, p, pshift + 1, 1, lp, tmp);
 			shl(p, 1);
 			p[0] |= 1;
-			trinkle(head - width, width, cmp, arg, p, pshift, 1, lp);
+			trinkle(head - width, width, cmp, arg, p, pshift, 1, lp, tmp);
 		}
 		head -= width;
 	}
+
+        zfree(tmp);
 }
 
 weak_alias(__qsort_r, qsort_r);

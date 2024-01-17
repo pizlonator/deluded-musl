@@ -1,6 +1,7 @@
 #include <fcntl.h>
 #include <stdarg.h>
 #include "syscall.h"
+#include <stdfil.h>
 
 int open(const char *filename, int flags, ...)
 {
@@ -13,9 +14,9 @@ int open(const char *filename, int flags, ...)
 		va_end(ap);
 	}
 
-	int fd = __sys_open_cp(filename, flags, mode);
+	int fd = zsys_open(filename, flags, mode);
 	if (fd>=0 && (flags & O_CLOEXEC))
 		__syscall(SYS_fcntl, fd, F_SETFD, FD_CLOEXEC);
 
-	return __syscall_ret(fd);
+	return fd;
 }

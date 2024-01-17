@@ -1,7 +1,8 @@
 #include <unistd.h>
 #include "syscall.h"
+#include <stdfil.h>
 
 pid_t getpid(void)
 {
-	return __syscall(SYS_getpid);
+    return zsys_getpid();
 }

@@ -6,7 +6,6 @@ struct stat {
 	uid_t st_uid;
 	gid_t st_gid;
 	dev_t st_rdev;
-	unsigned long __pad;
 	off_t st_size;
 	blksize_t st_blksize;
 	blkcnt_t st_blocks;

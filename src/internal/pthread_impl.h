@@ -10,6 +10,7 @@
 #include "syscall.h"
 #include "atomic.h"
 #include "futex.h"
+#include <stdfil.h>
 
 #include "pthread_arch.h"
 
@@ -114,13 +115,7 @@ enum {
 #define DTP_OFFSET 0
 #endif
 
-#ifdef TLS_ABOVE_TP
-#define TP_ADJ(p) ((char *)(p) + sizeof(struct pthread) + TP_OFFSET)
-#define __pthread_self() ((pthread_t)(__get_tp() - sizeof(struct __pthread) - TP_OFFSET))
-#else
-#define TP_ADJ(p) (p)
-#define __pthread_self() ((pthread_t)__get_tp())
-#endif
+#define __pthread_self() ((pthread_t)zthread_self())
 
 #ifndef tls_mod_off_t
 #define tls_mod_off_t size_t

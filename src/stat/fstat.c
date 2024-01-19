@@ -3,11 +3,11 @@
 #include <errno.h>
 #include <fcntl.h>
 #include "syscall.h"
+#include <stdfil.h>
 
 int __fstat(int fd, struct stat *st)
 {
-	if (fd<0) return __syscall_ret(-EBADF);
-	return __fstatat(fd, "", st, AT_EMPTY_PATH);
+    return zsys_fstat(fd, st);
 }
 
 weak_alias(__fstat, fstat);

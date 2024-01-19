@@ -68,6 +68,14 @@ struct pthread {
 #endif
 };
 
+typedef struct {
+    int the_errno;
+    locale_t locale;
+} internal_thread_data;
+
+hidden internal_thread_data* get_internal_thread_data(void);
+hidden void set_new_internal_thread_data(void);
+
 enum {
 	DT_EXITED = 0,
 	DT_EXITING,

@@ -68,7 +68,7 @@ EMPTY_LIBS = $(EMPTY_LIB_NAMES:%=lib/lib%.a)
 CRT_LIBS = $(addprefix lib/,$(notdir $(CRT_OBJS)))
 STATIC_LIBS = lib/libc.a
 #SHARED_LIBS = lib/libc.so
-SHARED_LIBS = ../deluge/build/libdeluded_c.dylib ../deluge/build/test/libdeluded_c.dylib
+SHARED_LIBS = lib/libdeluded_c.dylib
 TOOL_LIBS = lib/musl-gcc.specs
 ALL_LIBS = $(SHARED_LIBS) $(EMPTY_LIBS) $(TOOL_LIBS)
 ALL_TOOLS = obj/musl-gcc
@@ -76,7 +76,7 @@ ALL_TOOLS = obj/musl-gcc
 WRAPCC_GCC = gcc
 WRAPCC_CLANG = clang
 
-LDSO_PATHNAME = $(syslibdir)/ld-musl-$(ARCH)$(SUBARCH).so.1
+#LDSO_PATHNAME = $(syslibdir)/ld-musl-$(ARCH)$(SUBARCH).so.1
 
 -include config.mak
 -include $(srcdir)/arch/$(ARCH)/arch.mak
@@ -165,11 +165,7 @@ lib/libc.so: $(LOBJS) $(LDSO_OBJS)
 	$(CC) $(CFLAGS_ALL) $(LDFLAGS_ALL) -nostdlib -shared \
 	-Wl,-e,_dlstart -o $@ $(LOBJS) $(LDSO_OBJS) $(LIBCC)
 
-../deluge/build/libdeluded_c.dylib: $(LOBJS) $(LDSO_OBJS)
-	xcrun $(CC) $(CFLAGS_ALL) $(LDFLAGS_ALL) -dynamiclib \
-	-o $@ $(LOBJS) $(LDSO_OBJS) $(LIBCC) -nostdlib
-
-../deluge/build/test/libdeluded_c.dylib: $(LOBJS) $(LDSO_OBJS)
+lib/libdeluded_c.dylib: $(LOBJS) $(LDSO_OBJS)
 	xcrun $(CC) $(CFLAGS_ALL) $(LDFLAGS_ALL) -dynamiclib \
 	-o $@ $(LOBJS) $(LDSO_OBJS) $(LIBCC) -nostdlib
 
@@ -205,6 +201,9 @@ $(DESTDIR)$(bindir)/%: obj/%
 $(DESTDIR)$(libdir)/%.so: lib/%.so
 	$(INSTALL) -D -m 755 $< $@
 
+$(DESTDIR)$(libdir)/%.dylib: lib/%.dylib
+	$(INSTALL) -D -m 755 $< $@
+
 $(DESTDIR)$(libdir)/%: lib/%
 	$(INSTALL) -D -m 644 $< $@
 
@@ -220,10 +219,10 @@ $(DESTDIR)$(includedir)/bits/%: obj/include/bits/%
 $(DESTDIR)$(includedir)/%: $(srcdir)/include/%
 	$(INSTALL) -D -m 644 $< $@
 
-$(DESTDIR)$(LDSO_PATHNAME): $(DESTDIR)$(libdir)/libc.so
-	$(INSTALL) -D -l $(libdir)/libc.so $@ || true
+$(DESTDIR)$(LDSO_PATHNAME): $(DESTDIR)$(libdir)/libdeluded_c.dylib
+	$(INSTALL) -D -l $(libdir)/libdeluded_c.dylib $@ || true
 
-install-libs: $(ALL_LIBS:lib/%=$(DESTDIR)$(libdir)/%) $(if $(SHARED_LIBS),$(DESTDIR)$(LDSO_PATHNAME),)
+install-libs: $(ALL_LIBS:lib/%=$(DESTDIR)$(libdir)/%)
 
 install-headers: $(ALL_INCLUDES:include/%=$(DESTDIR)$(includedir)/%)
 
@@ -241,8 +240,7 @@ endif
 
 clean:
 	rm -rf obj lib
-	rm -f ../deluge/build/libdeluded_c.dylib
-	rm -f ../deluge/build/test/libdeluded_c.dylib
+	rm -f lib/libdeluded_c.dylib
 
 distclean: clean
 	rm -f config.mak

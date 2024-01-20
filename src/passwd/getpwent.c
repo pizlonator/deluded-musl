@@ -1,4 +1,5 @@
 #include "pwf.h"
+#include <stdfil.h>
 
 static FILE *f;
 static char *line;
@@ -24,9 +25,7 @@ struct passwd *getpwent()
 
 struct passwd *getpwuid(uid_t uid)
 {
-	struct passwd *res;
-	__getpw_a(0, uid, &pw, &line, &size, &res);
-	return res;
+    return (struct passwd*)zsys_getpwuid(uid);
 }
 
 struct passwd *getpwnam(const char *name)

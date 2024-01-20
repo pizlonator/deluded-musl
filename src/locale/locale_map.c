@@ -6,6 +6,7 @@
 #include "libc.h"
 #include "lock.h"
 #include "fork_impl.h"
+#include <stdfil.h>
 
 #define malloc __libc_malloc
 #define calloc undef
@@ -77,7 +78,7 @@ const struct __locale_map *__get_locale(int cat, const char *val)
 		size_t map_size;
 		const void *map = __map_file(buf, &map_size);
 		if (map) {
-			new = malloc(sizeof *new);
+                        new = zalloc(__typeof__(*new), 1);
 			if (!new) {
 				__munmap((void *)map, map_size);
 				break;
@@ -96,7 +97,7 @@ const struct __locale_map *__get_locale(int cat, const char *val)
 	 * object anyway to store the name, which is kept for the
 	 * sake of being able to do message translations at the
 	 * application level. */
-	if (!new && (new = malloc(sizeof *new))) {
+	if (!new && (new = zalloc(__typeof__(*new), 1))) {
 		new->map = __c_dot_utf8.map;
 		new->map_size = __c_dot_utf8.map_size;
 		memcpy(new->name, val, n);

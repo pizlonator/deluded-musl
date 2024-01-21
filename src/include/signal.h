@@ -9,6 +9,4 @@ hidden void __block_all_sigs(void *);
 hidden void __block_app_sigs(void *);
 hidden void __restore_sigs(void *);
 
-hidden void __get_handler_set(sigset_t *);
-
 #endif

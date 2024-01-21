@@ -26,9 +26,6 @@ static int __futex4_cp(volatile void *addr, int op, int val, const struct timesp
 	return __syscall_cp(SYS_futex, addr, op & ~FUTEX_PRIVATE, val, to);
 }
 
-static volatile int dummy = 0;
-weak_alias(dummy, __eintr_valid_flag);
-
 int __timedwait_cp(volatile int *addr, int val,
 	clockid_t clk, const struct timespec *at, int priv)
 {
@@ -55,7 +52,8 @@ int __timedwait_cp(volatile int *addr, int val,
 	 * interrupting (SA_RESTART) signal handlers. This is only practical
 	 * when NO interrupting signal handlers have been installed, and
 	 * works by sigaction tracking whether that's the case. */
-	if (r == EINTR && !__eintr_valid_flag) r = 0;
+        // WTF?
+	//if (r == EINTR && !__eintr_valid_flag) r = 0;
 
 	return r;
 }

@@ -46,7 +46,7 @@ static int child(void *args_vp)
 	 * memory, with unpredictable and dangerous results. To
 	 * reduce overhead, sigaction has tracked for us which signals
 	 * potentially have a signal handler. */
-	__get_handler_set(&hset);
+	//__get_handler_set(&hset);
 	for (i=1; i<_NSIG; i++) {
 		if ((attr->__flags & POSIX_SPAWN_SETSIGDEF)
 		     && sigismember(&attr->__def, i)) {
@@ -170,6 +170,8 @@ int posix_spawn(pid_t *restrict res, const char *restrict path,
 	char stack[1024+PATH_MAX];
 	int ec=0, cs;
 	struct args args;
+
+        zerror("posix_spawn not implemented");
 
 	pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &cs);
 

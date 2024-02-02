@@ -31,7 +31,6 @@ void __init_libc(char **envp, char *pn)
 {
 	size_t i, *auxv, aux[AUX_CNT] = { 0 };
 
-        zthread_boot_main_thread();
         __init_tls();
         zregister_sys_errno_handler(errno_handler);
 

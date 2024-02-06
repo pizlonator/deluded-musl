@@ -27,7 +27,9 @@ static int __pthread_timedjoin_np(pthread_t t, void **res, const struct timespec
 
 int __pthread_join(pthread_t t, void **res)
 {
-	return __pthread_timedjoin_np(t, res, 0);
+    if (zthread_join(t, res))
+        return 0;
+    return errno;
 }
 
 static int __pthread_tryjoin_np(pthread_t t, void **res)

@@ -3,7 +3,7 @@
 
 /* Implements the wtf-lock, which just uses two bits. */
 static const int is_held_bit = 1;
-static const int has_parked_bit = 1;
+static const int has_parked_bit = 2;
 
 void __lock(volatile int *l)
 {

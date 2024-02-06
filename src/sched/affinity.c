@@ -11,7 +11,9 @@ int sched_setaffinity(pid_t tid, size_t size, const cpu_set_t *set)
 
 int pthread_setaffinity_np(pthread_t td, size_t size, const cpu_set_t *set)
 {
-	return -__syscall(SYS_sched_setaffinity, td->tid, size, set);
+    zerror("pthread_setaffinity_np not implemented");
+    return 0;
+    //return -__syscall(SYS_sched_setaffinity, td->tid, size, set);
 }
 
 static int do_getaffinity(pid_t tid, size_t size, cpu_set_t *set)
@@ -29,5 +31,7 @@ int sched_getaffinity(pid_t tid, size_t size, cpu_set_t *set)
 
 int pthread_getaffinity_np(pthread_t td, size_t size, cpu_set_t *set)
 {
-	return -do_getaffinity(td->tid, size, set);
+    zerror("pthread_getaffinity_np not implemented");
+    return 0;
+    //return -do_getaffinity(td->tid, size, set);
 }

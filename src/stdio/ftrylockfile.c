@@ -30,7 +30,7 @@ void __register_locked_file(FILE *f, pthread_t self)
 int ftrylockfile(FILE *f)
 {
 	pthread_t self = __pthread_self();
-	int tid = self->tid;
+	int tid = zthread_self_id();
 	int owner = f->lock;
 	if ((owner & ~MAYBE_WAITERS) == tid) {
 		if (f->lockcount == LONG_MAX)

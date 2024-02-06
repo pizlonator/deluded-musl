@@ -15,7 +15,7 @@ int pthread_getname_np(pthread_t thread, char *name, size_t len)
 	if (thread == pthread_self())
 		return prctl(PR_GET_NAME, (unsigned long)name, 0UL, 0UL, 0UL) ? errno : 0;
 
-	snprintf(f, sizeof f, "/proc/self/task/%d/comm", thread->tid);
+	snprintf(f, sizeof f, "/proc/self/task/%d/comm", zthread_get_id(thread));
 	pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &cs);
 	if ((fd = open(f, O_RDONLY|O_CLOEXEC)) < 0 || (len = read(fd, name, len)) == -1) status = errno;
 	else name[len-1] = 0; /* remove trailing new line only if successful */

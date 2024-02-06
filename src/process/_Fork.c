@@ -6,21 +6,21 @@
 #include "pthread_impl.h"
 #include "aio_impl.h"
 #include "fork_impl.h"
+#include <stdfil.h>
 
 static void dummy(int x) { }
 weak_alias(dummy, __aio_atfork);
 
 void __post_Fork(int ret)
 {
+    zerror("fork is totally not implemented");
 	if (!ret) {
 		pthread_t self = __pthread_self();
-		self->tid = __syscall(SYS_set_tid_address, &__thread_list_lock);
+		//self->tid = __syscall(SYS_set_tid_address, &__thread_list_lock);
 		self->robust_list.off = 0;
 		self->robust_list.pending = 0;
 		self->next = self->prev = self;
-		__thread_list_lock = 0;
-		libc.threads_minus_1 = 0;
-		if (libc.need_locks) libc.need_locks = -1;
+		//__thread_list_lock = 0;
 	}
 	UNLOCK(__abort_lock);
 	if (!ret) __aio_atfork(1);

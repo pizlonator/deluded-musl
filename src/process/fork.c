@@ -46,10 +46,11 @@ weak_alias(dummy_0, __tl_unlock);
 
 pid_t fork(void)
 {
+    zerror("fork not implemented yet");
 	sigset_t set;
 	__fork_handler(-1);
 	__block_app_sigs(&set);
-	int need_locks = libc.need_locks > 0;
+	int need_locks = 1;
 	if (need_locks) {
 		__ldso_atfork(-1);
 		__pthread_key_atfork(-1);
@@ -65,8 +66,8 @@ pid_t fork(void)
 	int errno_save = errno;
 	if (need_locks) {
 		if (!ret) {
-			for (pthread_t td=next; td!=self; td=td->next)
-				td->tid = -1;
+			//for (pthread_t td=next; td!=self; td=td->next)
+			//	td->tid = -1;
 			if (__vmlock_lockptr) {
 				__vmlock_lockptr[0] = 0;
 				__vmlock_lockptr[1] = 0;

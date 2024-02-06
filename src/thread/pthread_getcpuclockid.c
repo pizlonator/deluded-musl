@@ -2,6 +2,6 @@
 
 int pthread_getcpuclockid(pthread_t t, clockid_t *clockid)
 {
-	*clockid = (-t->tid-1)*8U + 6;
+        *clockid = (-zthread_get_id(t)-1)*8U + 6;
 	return 0;
 }

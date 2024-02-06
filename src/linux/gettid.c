@@ -4,5 +4,6 @@
 
 pid_t gettid(void)
 {
-	return __pthread_self()->tid;
+    zerror("gettid not implemented because tids aren't pids and Linux got it wrong");
+    return 0;
 }

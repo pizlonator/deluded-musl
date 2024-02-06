@@ -19,7 +19,7 @@ static void dummy(void *p)
 
 static void handler(int sig)
 {
-	if (__pthread_self()->tid != target_tid) return;
+	if (zthread_self_id() != target_tid) return;
 
 	int old_errno = errno;
 
@@ -43,6 +43,7 @@ static void handler(int sig)
 
 void __synccall(void (*func)(void *), void *ctx)
 {
+    zerror("synccall not implemented");
 	sigset_t oldmask;
 	int cs, i, r;
 	struct sigaction sa = { .sa_flags = SA_RESTART | SA_ONSTACK, .sa_handler = handler };
@@ -64,9 +65,6 @@ void __synccall(void (*func)(void *), void *ctx)
 	sem_init(&caller_sem, 0, 0);
 	sem_init(&exit_sem, 0, 0);
 
-	if (!libc.threads_minus_1 || __syscall(SYS_gettid) != self->tid)
-		goto single_threaded;
-
 	callback = func;
 	context = ctx;
 
@@ -78,8 +76,8 @@ void __synccall(void (*func)(void *), void *ctx)
 
 
 	for (td=self->next; td!=self; td=td->next) {
-		target_tid = td->tid;
-		while ((r = -__syscall(SYS_tkill, td->tid, SIGSYNCCALL)) == EAGAIN);
+                target_tid = zthread_get_id(td);
+		while ((r = -__syscall(SYS_tkill, zthread_get_id(td), SIGSYNCCALL)) == EAGAIN);
 		if (r) {
 			/* If we failed to signal any thread, nop out the
 			 * callback to abort the synccall and just release
@@ -102,7 +100,6 @@ void __synccall(void (*func)(void *), void *ctx)
 	sa.sa_handler = SIG_IGN;
 	__libc_sigaction(SIGSYNCCALL, &sa, 0);
 
-single_threaded:
 	func(ctx);
 
 	/* Only release the caught threads once all threads, including the

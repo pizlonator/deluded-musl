@@ -114,7 +114,7 @@ int timer_create(clockid_t clk, struct sigevent *restrict evp, timer_t *restrict
 		ksev.sigev_value.sival_ptr = 0;
 		ksev.sigev_signo = SIGTIMER;
 		ksev.sigev_notify = SIGEV_THREAD_ID;
-		ksev.sigev_tid = td->tid;
+		ksev.sigev_tid = zthread_get_id(td);
 		if (syscall(SYS_timer_create, clk, &ksev, &timerid) < 0) {
 			timerid = -1;
 			td->cancel = 1;

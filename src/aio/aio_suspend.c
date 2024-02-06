@@ -4,6 +4,7 @@
 #include "atomic.h"
 #include "pthread_impl.h"
 #include "aio_impl.h"
+#include <stdfil.h>
 
 int aio_suspend(const struct aiocb *const cbs[], int cnt, const struct timespec *ts)
 {
@@ -51,7 +52,7 @@ int aio_suspend(const struct aiocb *const cbs[], int cnt, const struct timespec 
 			break;
 		default:
 			pfut = &__aio_fut;
-			if (!tid) tid = __pthread_self()->tid;
+			if (!tid) tid = zthread_self_id();
 			expect = a_cas(pfut, 0, tid);
 			if (!expect) expect = tid;
 			/* Need to recheck the predicate before waiting. */

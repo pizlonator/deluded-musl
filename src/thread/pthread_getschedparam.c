@@ -7,12 +7,12 @@ int pthread_getschedparam(pthread_t t, int *restrict policy, struct sched_param 
 	sigset_t set;
 	__block_app_sigs(&set);
 	LOCK(t->killlock);
-	if (!t->tid) {
+	if (!zthread_get_id(t)) {
 		r = ESRCH;
 	} else {
-		r = -__syscall(SYS_sched_getparam, t->tid, param);
+                r = -__syscall(SYS_sched_getparam, zthread_get_id(t), param);
 		if (!r) {
-			*policy = __syscall(SYS_sched_getscheduler, t->tid);
+			*policy = __syscall(SYS_sched_getscheduler, zthread_get_id(t));
 		}
 	}
 	UNLOCK(t->killlock);

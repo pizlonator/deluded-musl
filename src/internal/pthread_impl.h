@@ -33,7 +33,7 @@ struct pthread {
 #endif
 
 	/* Part 2 -- implementation details, non-ABI. */
-	int tid;
+	//int tid;
 	int errno_val;
 	volatile int detach_state;
 	volatile int cancel;
@@ -92,28 +92,26 @@ enum {
 #define _a_sched __u.__i[3*__SU+1]
 #define _a_policy __u.__i[3*__SU+2]
 #define _a_prio __u.__i[3*__SU+3]
-#define _m_type __u.__i[0]
-#define _m_lock __u.__vi[1]
-#define _m_waiters __u.__vi[2]
-#define _m_prev __u.__p[3]
-#define _m_next __u.__p[4]
-#define _m_count __u.__i[5]
-#define _c_shared __u.__p[0]
-#define _c_seq __u.__vi[2]
-#define _c_waiters __u.__vi[3]
-#define _c_clock __u.__i[4]
-#define _c_lock __u.__vi[8]
-#define _c_head __u.__p[1]
-#define _c_tail __u.__p[5]
-#define _rw_lock __u.__vi[0]
-#define _rw_waiters __u.__vi[1]
-#define _rw_shared __u.__i[2]
 #define _b_lock __u.__vi[0]
 #define _b_waiters __u.__vi[1]
 #define _b_limit __u.__i[2]
 #define _b_count __u.__vi[3]
 #define _b_waiters2 __u.__vi[4]
 #define _b_inst __u.__p[3]
+
+// This magic number was good enough for Jikes RVM and WebKit, so it's going to be good enough
+// for Deluge, too.
+#define SPIN_LIMIT 40u
+
+#define RWLOCK_IS_WRITE_HELD_BIT     1u
+#define RWLOCK_IS_WRITE_SPINNING_BIT 2u
+#define RWLOCK_HAS_PARKED_WRITE_BIT  4u
+#define RWLOCK_HAS_PARKED_READ_BIT   8u
+#define RWLOCK_HAS_PARKED_MASK       12u
+#define RWLOCK_BIT_MASK              15u
+#define RWLOCK_COUNT_SHIFT           4u
+#define RWLOCK_READ_PARK_ADDR(l)     (l)
+#define RWLOCK_WRITE_PARK_ADDR(l)    ((int*)((char*)(l) + 1))
 
 #ifndef TP_OFFSET
 #define TP_OFFSET 0
@@ -165,32 +163,30 @@ hidden int __set_thread_area(void *);
 hidden int __libc_sigaction(int, const struct sigaction *, struct sigaction *);
 hidden void __unmapself(void *, size_t);
 
+static inline double get_milliseconds(const struct timespec *ts)
+{
+    if (!ts)
+        return 1. / 0.;
+    return ts->tv_sec * 1000. * 1000. + ts->tv_nsec / 1000.;
+}
+
 hidden int __timedwait(volatile int *, int, clockid_t, const struct timespec *, int);
 hidden int __timedwait_cp(volatile int *, int, clockid_t, const struct timespec *, int);
 hidden void __wait(volatile int *, volatile int *, int, int);
 static inline void __wake(volatile void *addr, int cnt, int priv)
 {
-	if (priv) priv = FUTEX_PRIVATE;
-	if (cnt<0) cnt = INT_MAX;
-	__syscall(SYS_futex, addr, FUTEX_WAKE|priv, cnt) != -ENOSYS ||
-	__syscall(SYS_futex, addr, FUTEX_WAKE, cnt);
+    ZASSERT(priv);
+    zunpark(addr, cnt);
 }
 static inline void __futexwait(volatile void *addr, int val, int priv)
 {
-	if (priv) priv = FUTEX_PRIVATE;
-	__syscall(SYS_futex, addr, FUTEX_WAIT|priv, val, 0) != -ENOSYS ||
-	__syscall(SYS_futex, addr, FUTEX_WAIT, val, 0);
+    ZASSERT(priv);
+    zcompare_and_park(addr, val, 1. / 0.);
 }
 
 hidden void __acquire_ptc(void);
 hidden void __release_ptc(void);
 hidden void __inhibit_ptc(void);
-
-hidden void __tl_lock(void);
-hidden void __tl_unlock(void);
-hidden void __tl_sync(pthread_t);
-
-extern hidden volatile int __thread_list_lock;
 
 extern hidden volatile int __abort_lock[1];
 

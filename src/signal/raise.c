@@ -5,9 +5,11 @@
 
 int raise(int sig)
 {
-	sigset_t set;
-	__block_app_sigs(&set);
-	int ret = syscall(SYS_tkill, __pthread_self()->tid, sig);
-	__restore_sigs(&set);
-	return ret;
+    zerror("raise not implemented");
+    return 0;
+	//sigset_t set;
+	//__block_app_sigs(&set);
+	//int ret = syscall(SYS_tkill, __pthread_self()->tid, sig);
+	//__restore_sigs(&set);
+	//return ret;
 }

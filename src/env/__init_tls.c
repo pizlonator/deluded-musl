@@ -12,32 +12,32 @@
 
 volatile int __thread_list_lock;
 
-static void* internal_thread_data_key;
-
-static void internal_thread_data_destructor(void* data)
+hidden void destroy_internal_thread_data()
 {
+    internal_thread_data* data = get_internal_thread_data();
+    zfree(data->dlerror_string);
     zfree(data);
 }
 
 hidden void __init_tls(void)
 {
-    internal_thread_data_key = zthread_key_create(internal_thread_data_destructor);
-    ZASSERT(internal_thread_data_key);
     set_new_internal_thread_data();
 }
 
 hidden internal_thread_data* get_internal_thread_data(void)
 {
-    ZASSERT(internal_thread_data_key);
-    return (internal_thread_data*)zthread_getspecific(internal_thread_data_key);
+    internal_thread_data* result = (internal_thread_data*)zthread_self_cookie();
+    ZASSERT(result);
+    return result;
 }
 
 hidden void set_new_internal_thread_data(void)
 {
-    ZASSERT(!get_internal_thread_data());
+    ZASSERT(!zthread_self_cookie());
     internal_thread_data* data = zalloc(internal_thread_data, 1);
     data->the_errno = 0;
     data->locale = &libc.global_locale;
-    ZASSERT(zthread_setspecific(internal_thread_data_key, data));
+    data->thread_locals = NULL;
+    zthread_set_self_cookie(data);
 }
 

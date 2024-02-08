@@ -4,6 +4,6 @@
 
 int tss_set(tss_t k, void *x)
 {
-    ZASSERT(zthread_setspecific(k, x));
+    ZASSERT(!pthread_setspecific(k, x));
     return thrd_success;
 }

@@ -69,12 +69,32 @@ struct pthread {
 };
 
 typedef struct {
+    void* value;
+    unsigned long long version;
+} thread_local_data;
+
+typedef struct {
     int the_errno;
     locale_t locale;
+    thread_local_data* thread_locals;
+    char* dlerror_string;
+    int dlerror_flag;
 } internal_thread_data;
+
+typedef struct {
+    void (*destructor)(void* arg);
+    int is_active;
+    unsigned long long version;
+    size_t next_free_index;
+} thread_local_descriptor;
+
+extern hidden volatile int thread_local_lock;
+extern hidden thread_local_descriptor* thread_locals;
+extern hidden size_t next_free_descriptor;
 
 hidden internal_thread_data* get_internal_thread_data(void);
 hidden void set_new_internal_thread_data(void);
+hidden void destroy_internal_thread_data(void);
 
 enum {
 	DT_EXITED = 0,

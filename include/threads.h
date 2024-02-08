@@ -13,7 +13,7 @@ typedef struct __pthread *thrd_t;
 #endif
 
 typedef int once_flag;
-typedef struct __pthread_key* tss_t;
+typedef int tss_t;
 typedef int (*thrd_start_t)(void *);
 typedef void (*tss_dtor_t)(void *);
 

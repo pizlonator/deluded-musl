@@ -34,7 +34,34 @@ static void* start(void* p)
     void* (*start_func)(void*) = args->start_func;
     void* start_arg = args->start_arg;
     zfree(args);
-    return start_func(start_arg);
+    void* result = start_func(start_arg);
+
+    internal_thread_data* data = get_internal_thread_data();
+    size_t repeat;
+    for (repeat = 4; repeat--;) {
+        size_t index;
+        _Bool found_something = 0;
+        for (index = zlength(data->thread_locals); index--;) {
+            unsigned long long old_version = thread_locals[index].version;
+            if (old_version != data->thread_locals[index].version)
+                continue;
+            zfence();
+            void* value = data->thread_locals[index].value;
+            void (*destructor)(void* arg) = thread_locals[index].destructor;
+            zfence();
+            if (old_version != thread_locals[index].version || !value || !destructor)
+                continue;
+            data->thread_locals[index].value = NULL;
+            destructor(value);
+            found_something = 1;
+        }
+        if (!found_something)
+            break;
+    }
+
+    destroy_internal_thread_data();
+    
+    return result;
 }
 
 int __pthread_create(pthread_t *restrict res, const pthread_attr_t *restrict attrp, void *(*entry)(void *), void *restrict arg)

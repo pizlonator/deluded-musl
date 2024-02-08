@@ -45,6 +45,7 @@ static void unlock_write(volatile int *l)
             != current)
             continue;
         zunpark(RWLOCK_READ_PARK_ADDR(l), -1);
+        return;
     }
 }
 

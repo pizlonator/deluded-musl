@@ -43,7 +43,7 @@ int __pthread_rwlock_rdlock(pthread_rwlock_t *rw)
                            RWLOCK_IS_WRITE_SPINNING_BIT |
                            RWLOCK_HAS_PARKED_WRITE_BIT));
 
-        zcompare_and_park(RWLOCK_WRITE_PARK_ADDR(l), current, 1. / 0.);
+        zcompare_and_park(RWLOCK_READ_PARK_ADDR(l), current, 1. / 0.);
     }
 }
 

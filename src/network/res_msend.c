@@ -99,7 +99,7 @@ int __res_msend_rc(int nqueries, const unsigned char *const *queries,
 	int r;
 	unsigned long t0, t1, t2;
 
-	pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &cs);
+	//pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &cs);
 
 	timeout = 1000*conf->timeout;
 	attempts = conf->attempts;
@@ -126,7 +126,7 @@ int __res_msend_rc(int nqueries, const unsigned char *const *queries,
 	if (fd < 0 && family == AF_INET6 && errno == EAFNOSUPPORT) {
 		for (i=0; i<nns && conf->ns[nns].family == AF_INET6; i++);
 		if (i==nns) {
-			pthread_setcancelstate(cs, 0);
+                        //pthread_setcancelstate(cs, 0);
 			return -1;
 		}
 		fd = socket(AF_INET, SOCK_DGRAM|SOCK_CLOEXEC|SOCK_NONBLOCK, 0);
@@ -152,7 +152,7 @@ int __res_msend_rc(int nqueries, const unsigned char *const *queries,
 	sa.sin.sin_family = family;
 	if (fd < 0 || bind(fd, (void *)&sa, sl) < 0) {
 		if (fd >= 0) close(fd);
-		pthread_setcancelstate(cs, 0);
+		//pthread_setcancelstate(cs, 0);
 		return -1;
 	}
 
@@ -165,8 +165,8 @@ int __res_msend_rc(int nqueries, const unsigned char *const *queries,
 	pfd[nqueries].events = POLLIN;
 	pfd[nqueries+1].fd = -2;
 
-	pthread_cleanup_push(cleanup, pfd);
-	pthread_setcancelstate(cs, 0);
+	//pthread_cleanup_push(cleanup, pfd);
+	//pthread_setcancelstate(cs, 0);
 
 	memset(alens, 0, sizeof *alens * nqueries);
 
@@ -253,9 +253,9 @@ int __res_msend_rc(int nqueries, const unsigned char *const *queries,
 			/* If answer is truncated (TC bit), fallback to TCP */
 			if ((answers[i][2] & 2) || (mh.msg_flags & MSG_TRUNC)) {
 				alens[i] = -1;
-				pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, 0);
+				//pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, 0);
 				r = start_tcp(pfd+i, family, ns+j, sl, queries[i], qlens[i]);
-				pthread_setcancelstate(cs, 0);
+				//pthread_setcancelstate(cs, 0);
 				if (r >= 0) {
 					qpos[i] = r;
 					apos[i] = 0;
@@ -308,7 +308,7 @@ int __res_msend_rc(int nqueries, const unsigned char *const *queries,
 		}
 	}
 out:
-	pthread_cleanup_pop(1);
+	//pthread_cleanup_pop(1);
 
 	/* Disregard any incomplete TCP results */
 	for (i=0; i<nqueries; i++) if (alens[i]<0) alens[i] = 0;

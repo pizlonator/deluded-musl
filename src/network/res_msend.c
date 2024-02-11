@@ -14,6 +14,7 @@
 #include "stdio_impl.h"
 #include "syscall.h"
 #include "lookup.h"
+#include <stdfil.h>
 
 static void cleanup(void *p)
 {

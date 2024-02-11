@@ -3,14 +3,15 @@
 #include <netdb.h>
 #include "lookup.h"
 #include "lock.h"
+#include <stdfil.h>
 
 void freeaddrinfo(struct addrinfo *p)
 {
-	size_t cnt;
-	for (cnt=1; p->ai_next; cnt++, p=p->ai_next);
-	struct aibuf *b = (void *)((char *)p - offsetof(struct aibuf, ai));
-	b -= b->slot;
-	LOCK(b->lock);
-	if (!(b->ref -= cnt)) free(b);
-	else UNLOCK(b->lock);
+    while (p) {
+        struct addrinfo* next = p->ai_next;
+        zfree(p->ai_addr);
+        zfree(p->ai_canonname);
+        zfree(p);
+        p = next;
+    }
 }

@@ -1,5 +1,6 @@
 #include "stdio_impl.h"
 #include <string.h>
+#include <stdfil.h>
 
 size_t __fwritex(const unsigned char *restrict s, size_t l, FILE *restrict f)
 {
@@ -32,7 +33,8 @@ size_t fwrite(const void *restrict src, size_t size, size_t nmemb, FILE *restric
 	FLOCK(f);
 	k = __fwritex(src, l, f);
 	FUNLOCK(f);
-	return k==l ? nmemb : k/size;
+        size_t result = k==l ? nmemb : k/size;
+	return result;
 }
 
 weak_alias(fwrite, fwrite_unlocked);

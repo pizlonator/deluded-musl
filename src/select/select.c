@@ -10,5 +10,5 @@
 
 int select(int n, fd_set *restrict rfds, fd_set *restrict wfds, fd_set *restrict efds, struct timeval *restrict tv)
 {
-    zsys_select(n, rfds, wfds, efds, tv);
+    return zsys_select(n, rfds, wfds, efds, tv);
 }

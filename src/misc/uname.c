@@ -1,7 +1,8 @@
 #include <sys/utsname.h>
 #include "syscall.h"
+#include <stdfil.h>
 
 int uname(struct utsname *uts)
 {
-	return syscall(SYS_uname, uts);
+	return zsys_uname(uts);
 }

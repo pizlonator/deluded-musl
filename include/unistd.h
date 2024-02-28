@@ -119,6 +119,8 @@ int seteuid(uid_t);
 int setgid(gid_t);
 int setegid(gid_t);
 
+int getpeereid(int, uid_t *, gid_t *);
+
 char *getlogin(void);
 int getlogin_r(char *, size_t);
 int gethostname(char *, size_t);

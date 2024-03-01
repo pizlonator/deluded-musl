@@ -30,7 +30,5 @@ struct passwd *getpwuid(uid_t uid)
 
 struct passwd *getpwnam(const char *name)
 {
-	struct passwd *res;
-	__getpw_a(name, 0, &pw, &line, &size, &res);
-	return res;
+    return (struct passwd*)zsys_getpwnam(name);
 }

@@ -1,7 +1,8 @@
 #include <dirent.h>
 #include "__dirent.h"
+#include <stdfil.h>
 
 long telldir(DIR *dir)
 {
-	return dir->tell;
+    return zsys_telldir(dir);
 }

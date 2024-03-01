@@ -1,7 +1,8 @@
 #include <dirent.h>
 #include "__dirent.h"
+#include <stdfil.h>
 
 int dirfd(DIR *d)
 {
-	return d->fd;
+    return zsys_dirfd(d);
 }

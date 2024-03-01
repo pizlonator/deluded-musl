@@ -16,7 +16,7 @@ int open(const char *filename, int flags, ...)
 
 	int fd = zsys_open(filename, flags, mode);
 	if (fd>=0 && (flags & O_CLOEXEC))
-		__syscall(SYS_fcntl, fd, F_SETFD, FD_CLOEXEC);
+		zsys_fcntl(fd, F_SETFD, FD_CLOEXEC);
 
 	return fd;
 }

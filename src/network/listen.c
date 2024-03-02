@@ -1,7 +1,8 @@
 #include <sys/socket.h>
 #include "syscall.h"
+#include <stdfil.h>
 
 int listen(int fd, int backlog)
 {
-	return socketcall(listen, fd, backlog, 0, 0, 0, 0);
+    return zsys_listen(fd, backlog);
 }

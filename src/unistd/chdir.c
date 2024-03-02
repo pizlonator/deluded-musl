@@ -1,7 +1,8 @@
 #include <unistd.h>
 #include "syscall.h"
+#include <stdfil.h>
 
 int chdir(const char *path)
 {
-	return syscall(SYS_chdir, path);
+    return zsys_chdir(path);
 }

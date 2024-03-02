@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <limits.h>
+#include <stdfil.h>
 
 struct __locale_map;
 
@@ -48,7 +49,7 @@ extern char *__progname, *__progname_full;
 
 extern hidden const char __libc_version[];
 
-hidden void __synccall(void (*)(void *), void *);
+#define __synccall(callback, arg) zerrorf("%s:%d: %s: attempt to __synccall(%s, %s)", __FILE__, __LINE__, __PRETTY_FUNCTION__, #callback, #arg)
 hidden int __setxid(int, int, int, int);
 
 #endif

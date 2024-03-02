@@ -1,7 +1,8 @@
 #include <unistd.h>
 #include "syscall.h"
+#include <stdfil.h>
 
 pid_t setsid(void)
 {
-	return syscall(SYS_setsid);
+    return zsys_setsid();
 }

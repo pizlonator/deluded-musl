@@ -186,6 +186,7 @@ int getentropy(void *, size_t);
 extern int optreset;
 #endif
 
+#if 0
 #ifdef _GNU_SOURCE
 extern char **environ;
 int setresuid(uid_t, uid_t, uid_t);
@@ -198,6 +199,7 @@ int euidaccess(const char *, int);
 int eaccess(const char *, int);
 ssize_t copy_file_range(int, off_t *, int, off_t *, size_t, unsigned);
 pid_t gettid(void);
+#endif
 #endif
 
 #if defined(_LARGEFILE64_SOURCE)

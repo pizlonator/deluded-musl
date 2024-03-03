@@ -1,4 +1,5 @@
 #include "pwf.h"
+#include <stdfil.h>
 
 static FILE *f;
 static char *line, **mem;
@@ -32,8 +33,5 @@ struct group *getgrgid(gid_t gid)
 
 struct group *getgrnam(const char *name)
 {
-	struct group *res;
-	size_t size=0, nmem=0;
-	__getgr_a(name, 0, &gr, &line, &size, &mem, &nmem, &res);
-	return res;
+    return (struct group*)zsys_getgrnam(name);
 }

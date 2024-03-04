@@ -8,7 +8,6 @@
 #define	_PATH_CONSOLE	"/dev/console"
 #define	_PATH_DEVNULL	"/dev/null"
 #define	_PATH_KLOG	"/proc/kmsg"
-#define	_PATH_LASTLOG	"/var/log/lastlog"
 #define	_PATH_MAILDIR	"/var/mail"
 #define	_PATH_MAN	"/usr/share/man"
 #define	_PATH_MNTTAB	"/etc/fstab"

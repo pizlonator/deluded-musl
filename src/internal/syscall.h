@@ -59,18 +59,7 @@ hidden long __syscall_ret(unsigned long),
 #define __syscall_cp(...) __SYSCALL_DISP(__syscall_cp,__VA_ARGS__)
 #define syscall_cp(...) __syscall_ret(__syscall_cp(__VA_ARGS__))
 
-static inline long __alt_socketcall(int sys, int sock, int cp, syscall_arg_t a, syscall_arg_t b, syscall_arg_t c, syscall_arg_t d, syscall_arg_t e, syscall_arg_t f)
-{
-	long r;
-	if (cp) r = __syscall_cp(sys, a, b, c, d, e, f);
-	else r = __syscall(sys, a, b, c, d, e, f);
-	if (r != -ENOSYS) return r;
-#ifdef SYS_socketcall
-	if (cp) r = __syscall_cp(SYS_socketcall, sock, ((long[6]){a, b, c, d, e, f}));
-	else r = __syscall(SYS_socketcall, sock, ((long[6]){a, b, c, d, e, f}));
-#endif
-	return r;
-}
+#define __alt_socketcall(sys, sock, cp, a, b, c, d, e, f) ({ zerrorf("%s:%d: %s: bad socketcall: %s, %s, %s, %s, %s, %s, %s, %s, %s", __FILE__, __LINE__, __PRETTY_FUNCTION__, #sys, #sock, #cp, #a, #b, #c, #d, #e, #f); 0; })
 #define __socketcall(nm, a, b, c, d, e, f) __alt_socketcall(SYS_##nm, __SC_##nm, 0, \
 	__scc(a), __scc(b), __scc(c), __scc(d), __scc(e), __scc(f))
 #define __socketcall_cp(nm, a, b, c, d, e, f) __alt_socketcall(SYS_##nm, __SC_##nm, 1, \

@@ -37,14 +37,6 @@ int utmpname(const char *);
 
 int login_tty(int);
 
-#define _PATH_UTMP "/dev/null/utmp"
-#define _PATH_WTMP "/dev/null/wtmp"
-
-#define UTMP_FILE _PATH_UTMP
-#define WTMP_FILE _PATH_WTMP
-#define UTMP_FILENAME _PATH_UTMP
-#define WTMP_FILENAME _PATH_WTMP
-
 #ifdef __cplusplus
 }
 #endif

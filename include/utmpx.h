@@ -8,6 +8,7 @@ extern "C" {
 #include <features.h>
 
 #define __NEED_pid_t
+#define __NEED_uid_t
 #define __NEED_time_t
 #define __NEED_suseconds_t
 #define __NEED_struct_timeval
@@ -26,14 +27,16 @@ struct utmpx {
 		short __e_termination;
 		short __e_exit;
 	} ut_exit;
-#if __BYTE_ORDER == 1234
 	int ut_session, __ut_pad2;
-#else
-	int __ut_pad2, ut_session;
-#endif
 	struct timeval ut_tv;
 	unsigned ut_addr_v6[4];
 	char __unused[20];
+};
+
+struct lastlogx {
+	struct timeval ll_tv;
+	char ll_line[32];
+	char ll_host[256];
 };
 
 void          endutxent(void);
@@ -42,6 +45,9 @@ struct utmpx *getutxid(const struct utmpx *);
 struct utmpx *getutxline(const struct utmpx *);
 struct utmpx *pututxline(const struct utmpx *);
 void          setutxent(void);
+
+struct lastlogx *getlastlogx(uid_t, struct lastlogx *);
+struct lastlogx *getlastlogxbyname(const char*, struct lastlogx *);
 
 #if defined(_BSD_SOURCE) || defined(_GNU_SOURCE)
 #define e_exit __e_exit

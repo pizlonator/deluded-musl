@@ -2,33 +2,36 @@
 #include <utmpx.h>
 #include <stddef.h>
 #include <errno.h>
+#include <stdfil.h>
 
 void endutxent(void)
 {
+    return zsys_endutxent();
 }
 
 void setutxent(void)
 {
+    return zsys_setutxent();
 }
 
 struct utmpx *getutxent(void)
 {
-	return NULL;
+    return zsys_getutxent();
 }
 
 struct utmpx *getutxid(const struct utmpx *ut)
 {
-	return NULL;
+    return zsys_getutxid(ut);
 }
 
 struct utmpx *getutxline(const struct utmpx *ut)
 {
-	return NULL;
+    return zsys_getutxline(ut);
 }
 
 struct utmpx *pututxline(const struct utmpx *ut)
 {
-	return NULL;
+    return zsys_pututxline(ut);
 }
 
 void updwtmpx(const char *f, const struct utmpx *u)
@@ -39,6 +42,16 @@ static int __utmpxname(const char *f)
 {
 	errno = ENOTSUP;
 	return -1;
+}
+
+struct lastlogx *getlastlogx(uid_t uid, struct lastlogx *lastlogx)
+{
+    return zsys_getlastlogx(uid, lastlogx);
+}
+
+struct lastlogx *getlastlogxbyname(const char* name, struct lastlogx *lastlogx)
+{
+    return zsys_getlastlogxbyname(name, lastlogx);
 }
 
 weak_alias(endutxent, endutent);

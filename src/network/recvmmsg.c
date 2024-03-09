@@ -12,6 +12,8 @@ hidden void __convert_scm_timestamps(struct msghdr *, socklen_t);
 
 int recvmmsg(int fd, struct mmsghdr *msgvec, unsigned int vlen, unsigned int flags, struct timespec *timeout)
 {
+    zerror("recvmsg not implemented yet");
+#if 0
 #if LONG_MAX > INT_MAX
 	struct mmsghdr *mh = msgvec;
 	unsigned int i;
@@ -35,5 +37,6 @@ int recvmmsg(int fd, struct mmsghdr *msgvec, unsigned int vlen, unsigned int fla
 	return __syscall_ret(r);
 #else
 	return syscall_cp(SYS_recvmmsg, fd, msgvec, vlen, flags, timeout);
+#endif
 #endif
 }

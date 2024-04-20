@@ -34,7 +34,7 @@ hidden internal_thread_data* get_internal_thread_data(void)
 hidden void set_new_internal_thread_data(void)
 {
     ZASSERT(!zthread_self_cookie());
-    internal_thread_data* data = zalloc(internal_thread_data, 1);
+    internal_thread_data* data = (internal_thread_data*)zalloc(sizeof(internal_thread_data));
     data->the_errno = 0;
     data->locale = &libc.global_locale;
     data->thread_locals = NULL;

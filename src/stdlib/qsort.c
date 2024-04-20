@@ -163,7 +163,7 @@ void __qsort_r(void *base, size_t nel, size_t width, cmpfun cmp, void *arg)
 
 	if (!size) return;
 
-        tmp = zalloc_with_type(zgettypeslice(base, width), width);
+        tmp = malloc(width);
         ZASSERT(tmp);
 
 	head = base;

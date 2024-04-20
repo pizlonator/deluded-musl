@@ -8,7 +8,7 @@ int pthread_setspecific(pthread_key_t k, const void *x)
         size_t new_length = zlength(thread_locals);
         if ((size_t)k >= new_length)
             return EINVAL;
-        thread_local_data* new_locals = zalloc(thread_local_data, new_length);
+        thread_local_data* new_locals = zalloc(sizeof(thread_local_data) * new_length);
         if (!new_locals)
             return ENOMEM;
         __builtin_memcpy(new_locals, data->thread_locals, zlength(data->thread_locals) * sizeof(thread_local_data));

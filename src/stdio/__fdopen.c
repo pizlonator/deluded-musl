@@ -19,10 +19,10 @@ FILE *__fdopen(int fd, const char *mode)
 	}
 
 	/* Allocate FILE+buffer or fail */
-	if (!(f=zalloc_flex(FILE, trailing, UNGET + BUFSIZ))) return 0;
+	if (!(f=malloc(sizeof *f + UNGET + BUFSIZ))) return 0;
 
 	/* Zero-fill only the struct, not the buffer */
-	memset(f, 0, __builtin_offsetof(FILE, trailing));
+	memset(f, 0, sizeof *f);
 
 	/* Impose mode restrictions */
 	if (!strchr(mode, '+')) f->flags = (*mode == 'r') ? F_NOWR : F_NORD;
@@ -39,7 +39,7 @@ FILE *__fdopen(int fd, const char *mode)
 	}
 
 	f->fd = fd;
-	f->buf = f->trailing + UNGET;
+	f->buf = (unsigned char *)f + sizeof *f + UNGET;
 	f->buf_size = BUFSIZ;
 
 	/* Activate line buffered mode for terminals */

@@ -9,7 +9,5 @@ void *calloc(size_t m, size_t n)
 		return 0;
 	}
 	n *= m;
-	void *p = malloc(n);
-        __builtin_memset(p, 0, n);
-	return p;
+	return zalloc(n); /* zalloc zeroes memory alraedy */
 }

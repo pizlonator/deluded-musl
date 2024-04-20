@@ -23,7 +23,7 @@ int __pthread_key_create(pthread_key_t *k, void (*dtor)(void *))
         else
             new_size = zlength(thread_locals) * 2;
 
-        thread_local_descriptor* new_thread_locals = zalloc(thread_local_descriptor, new_size);
+        thread_local_descriptor* new_thread_locals = zalloc(sizeof(thread_local_descriptor) * new_size);
         ZASSERT(zlength(new_thread_locals) == new_size);
         __builtin_memcpy(new_thread_locals, thread_locals, zlength(thread_locals) * sizeof(thread_local_descriptor));
 

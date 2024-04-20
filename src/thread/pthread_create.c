@@ -67,7 +67,7 @@ static void* start(void* p)
 int __pthread_create(pthread_t *restrict res, const pthread_attr_t *restrict attrp, void *(*entry)(void *), void *restrict arg)
 {
     ZASSERT(!attrp);
-    struct start_args* args = zalloc(struct start_args, 1);
+    struct start_args* args = zalloc(sizeof(struct start_args));
     args->start_func = entry;
     args->start_arg = arg;
     void* thread = zthread_create(start, args);

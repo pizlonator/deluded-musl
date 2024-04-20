@@ -31,7 +31,7 @@ hidden void __dl_vseterr(const char *fmt, va_list ap)
 	size_t len = vsnprintf(0, 0, fmt, ap2);
 	if (len < sizeof(void *)) len = sizeof(void *);
 	va_end(ap2);
-	char *buf = zalloc(char, len+1);
+	char *buf = (char*)zalloc(len+1);
         ZASSERT(buf);
         vsnprintf(buf, len+1, fmt, ap);
         data->dlerror_string = buf;

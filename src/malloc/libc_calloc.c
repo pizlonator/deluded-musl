@@ -9,9 +9,7 @@ void* __libc_calloc(size_t size, size_t count)
         return NULL;
     }
 
-    void* result = zalloc(char, size);
-    __builtin_memset(result, 0, size);
-    return result;
+    return zalloc(size); /* zalloc already zeroes memory */
 }
 
 

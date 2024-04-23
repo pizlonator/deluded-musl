@@ -9,6 +9,7 @@ static void callback(_Bool did_unpark_thread, _Bool may_have_more_threads, void*
 
 int pthread_cond_signal(pthread_cond_t *c)
 {
+    ZASSERT(c->__inited == 42);
     if (!c->__i)
         return 0;
     zunpark_one(&c->__i, callback, c);

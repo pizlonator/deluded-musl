@@ -21,6 +21,7 @@ void before_sleep_callback(void* arg)
 
 int __pthread_cond_timedwait(pthread_cond_t *restrict c, pthread_mutex_t *restrict m, const struct timespec *restrict ts)
 {
+    ZASSERT(c->__inited == 42);
     wait_data data;
     data.c = c;
     data.m = m;

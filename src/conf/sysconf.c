@@ -7,6 +7,7 @@
 #include <sys/auxv.h>
 #include "syscall.h"
 #include "libc.h"
+#include <stdfil.h>
 
 #define JT(x) (-256|(x))
 #define VER JT(1)
@@ -27,6 +28,10 @@
 
 long sysconf(int name)
 {
+    errno = 0;
+    long zsys_result = zsys_sysconf_override(name);
+    if (errno != ENOSYS)
+        return zsys_result;
 	static const short values[] = {
 		[_SC_ARG_MAX] = JT_ARG_MAX,
 		[_SC_CHILD_MAX] = RLIM(NPROC),

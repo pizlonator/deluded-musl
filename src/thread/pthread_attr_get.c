@@ -56,12 +56,6 @@ int pthread_barrierattr_getpshared(const pthread_barrierattr_t *restrict a, int 
 	return 0;
 }
 
-int pthread_condattr_getclock(const pthread_condattr_t *restrict a, clockid_t *restrict clk)
-{
-	*clk = a->__attr & 0x7fffffff;
-	return 0;
-}
-
 int pthread_condattr_getpshared(const pthread_condattr_t *restrict a, int *restrict pshared)
 {
 	*pshared = a->__attr>>31;

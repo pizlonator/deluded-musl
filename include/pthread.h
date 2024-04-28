@@ -181,9 +181,7 @@ int pthread_mutexattr_settype(pthread_mutexattr_t *, int);
 
 int pthread_condattr_init(pthread_condattr_t *);
 int pthread_condattr_destroy(pthread_condattr_t *);
-int pthread_condattr_setclock(pthread_condattr_t *, clockid_t);
 int pthread_condattr_setpshared(pthread_condattr_t *, int);
-int pthread_condattr_getclock(const pthread_condattr_t *__restrict, clockid_t *__restrict);
 int pthread_condattr_getpshared(const pthread_condattr_t *__restrict, int *__restrict);
 
 int pthread_rwlockattr_init(pthread_rwlockattr_t *);

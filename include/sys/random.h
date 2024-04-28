@@ -12,7 +12,9 @@ extern "C" {
 #define GRND_RANDOM	0x0002
 #define GRND_INSECURE	0x0004
 
+#if 0
 ssize_t getrandom(void *, size_t, unsigned);
+#endif
 
 #ifdef __cplusplus
 }

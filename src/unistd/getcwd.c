@@ -3,6 +3,7 @@
 #include <limits.h>
 #include <string.h>
 #include "syscall.h"
+#include <stdfil.h>
 
 char *getcwd(char *buf, size_t size)
 {
@@ -14,10 +15,11 @@ char *getcwd(char *buf, size_t size)
 		errno = EINVAL;
 		return 0;
 	}
-	long ret = syscall(SYS_getcwd, buf, size);
-	if (ret < 0)
+	char* ret = zsys_getcwd(buf, size);
+	if (!ret)
 		return 0;
-	if (ret == 0 || buf[0] != '/') {
+        ZASSERT(ret == buf);
+	if (!buf[0] || buf[0] != '/') {
 		errno = ENOENT;
 		return 0;
 	}

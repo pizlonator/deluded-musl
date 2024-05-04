@@ -25,10 +25,11 @@ int __pthread_cond_timedwait(pthread_cond_t *restrict c, pthread_mutex_t *restri
     wait_data data;
     data.c = c;
     data.m = m;
-    _Bool result = zpark_if(
+    zpark_result result = zpark_if(
         &c->__i, condition_callback, before_sleep_callback, &data, get_milliseconds(ts));
     pthread_mutex_lock(m);
-    return result ? 0 : ETIMEDOUT;
+    ZASSERT(result == zpark_timed_out || result == zpark_unparked);
+    return result == zpark_unparked ? 0 : ETIMEDOUT;
 }
 
 weak_alias(__pthread_cond_timedwait, pthread_cond_timedwait);

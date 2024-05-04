@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include "syscall.h"
 #include "atomic.h"
+#include "dynlink.h"
 #include "libc.h"
 #include <errno.h>
 #include <stdfil.h>
@@ -22,6 +23,11 @@ static void errno_handler(int errno_value)
     errno = errno_value;
 }
 
+static void dlerror_handler(const char* str)
+{
+    __dl_seterr("%s", str);
+}
+
 #ifdef __GNUC__
 __attribute__((__noinline__))
 #endif
@@ -31,6 +37,7 @@ void __init_libc(char **envp, char *pn)
 
         __init_tls();
         zregister_sys_errno_handler(errno_handler);
+        zregister_sys_dlerror_handler(dlerror_handler);
 
 	__environ = envp;
 	for (i=0; envp[i]; i++);

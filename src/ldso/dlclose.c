@@ -3,5 +3,6 @@
 
 int dlclose(void *p)
 {
-	return __dl_invalid_handle(p);
+    /* FIXME: We could, and should, implement dlclosing eventually. */
+    return 0;
 }

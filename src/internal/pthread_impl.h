@@ -221,4 +221,24 @@ extern hidden unsigned __default_guardsize;
 
 #define __ATTRP_C11_THREAD ((void*)(uintptr_t)-1)
 
+static inline int __mutex_lock_wrapper(pthread_mutex_t* m, int (*lock_impl)(pthread_mutex_t* m))
+{
+    if (m->__recurse_count != UINT_MAX && m->__tid == zthread_self_id()) {
+        ZASSERT(m->__recurse_count);
+        if (m->__recurse_count + 1 == UINT_MAX)
+            return EAGAIN;
+        m->__recurse_count++;
+        return 0;
+    }
+    int result = lock_impl(m);
+    if (result)
+        return result;
+    if (m->__recurse_count != UINT_MAX) {
+        ZASSERT(!m->__recurse_count);
+        m->__tid = zthread_self_id();
+        m->__recurse_count = 1;
+    }
+    return 0;
+}
+
 #endif

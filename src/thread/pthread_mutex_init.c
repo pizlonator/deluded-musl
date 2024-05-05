@@ -5,6 +5,5 @@ int pthread_mutex_init(pthread_mutex_t *restrict m, const pthread_mutexattr_t *r
 {
     ZASSERT(!a);
     m->__i = 0;
-    m->__inited = 42;
     return 0;
 }

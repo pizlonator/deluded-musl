@@ -8,9 +8,9 @@
 
 _Noreturn void abort(void)
 {
-	raise(SIGABRT);
+    //raise(SIGABRT);
         
-        zerror("abort failed");
+        zerror("abort() called");
 
 	/* If there was a SIGABRT handler installed and it returned, or if
 	 * SIGABRT was blocked or ignored, take an AS-safe lock to prevent

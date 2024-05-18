@@ -66,7 +66,9 @@ int timespec_get(struct timespec *, int);
 
 #define TIME_UTC 1
 
-#if defined(_POSIX_SOURCE) || defined(_POSIX_C_SOURCE) \
+int nanosleep (const struct timespec *, struct timespec *);
+
+#if defined(_POSIX_SOURCE) || defined(_POSIX_C_SOURCE)  \
  || defined(_XOPEN_SOURCE) || defined(_GNU_SOURCE) \
  || defined(_BSD_SOURCE)
 
@@ -99,7 +101,6 @@ struct itimerspec {
 
 #define TIMER_ABSTIME 1
 
-int nanosleep (const struct timespec *, struct timespec *);
 int clock_getres (clockid_t, struct timespec *);
 int clock_gettime (clockid_t, struct timespec *);
 int clock_settime (clockid_t, const struct timespec *);

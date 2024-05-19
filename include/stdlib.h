@@ -151,7 +151,6 @@ void *reallocarray (void *, size_t, size_t);
 void qsort_r (void *, size_t, size_t, int (*)(const void *, const void *, void *), void *);
 #endif
 
-#ifdef _GNU_SOURCE
 int ptsname_r(int, char *, size_t);
 char *ecvt(double, int, int *, int *);
 char *fcvt(double, int, int *, int *);
@@ -161,7 +160,6 @@ struct __locale_struct;
 float strtof_l(const char *__restrict, char **__restrict, struct __locale_struct *);
 double strtod_l(const char *__restrict, char **__restrict, struct __locale_struct *);
 long double strtold_l(const char *__restrict, char **__restrict, struct __locale_struct *);
-#endif
 
 #if defined(_LARGEFILE64_SOURCE)
 #define mkstemp64 mkstemp

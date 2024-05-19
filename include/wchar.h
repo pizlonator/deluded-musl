@@ -18,15 +18,10 @@ extern "C" {
 #define __NEED_struct__IO_FILE
 #endif
 
-#if defined(_POSIX_SOURCE) || defined(_POSIX_C_SOURCE) \
- || defined(_XOPEN_SOURCE) || defined(_GNU_SOURCE) || defined(_BSD_SOURCE)
 #define __NEED_locale_t
 #define __NEED_va_list
-#endif
 
-#if defined(_XOPEN_SOURCE) || defined(_GNU_SOURCE) || defined(_BSD_SOURCE)
 #define __NEED_wctype_t
-#endif
 
 #include <bits/alltypes.h>
 
@@ -157,8 +152,6 @@ int fputws_unlocked (const wchar_t *__restrict, FILE *__restrict);
 size_t wcsftime_l (wchar_t *__restrict, size_t, const wchar_t *__restrict, const struct tm *__restrict, locale_t);
 #endif
 
-#if defined(_POSIX_SOURCE) || defined(_POSIX_C_SOURCE) \
- || defined(_XOPEN_SOURCE) || defined(_GNU_SOURCE)  || defined(_BSD_SOURCE)
 FILE *open_wmemstream(wchar_t **, size_t *);
 size_t mbsnrtowcs(wchar_t *__restrict, const char **__restrict, size_t, size_t, mbstate_t *__restrict);
 size_t wcsnrtombs(char *__restrict, const wchar_t **__restrict, size_t, size_t, mbstate_t *__restrict);
@@ -172,9 +165,7 @@ int wcsncasecmp(const wchar_t *, const wchar_t *, size_t);
 int wcsncasecmp_l(const wchar_t *, const wchar_t *, size_t, locale_t);
 int wcscoll_l(const wchar_t *, const wchar_t *, locale_t);
 size_t wcsxfrm_l(wchar_t *__restrict, const wchar_t *__restrict, size_t, locale_t);
-#endif
 
-#if defined(_XOPEN_SOURCE) || defined(_GNU_SOURCE) || defined(_BSD_SOURCE)
 int wcwidth (wchar_t);
 int wcswidth (const wchar_t *, size_t);
 int       iswalnum(wint_t);
@@ -197,7 +188,6 @@ wctype_t  wctype(const char *);
 #ifndef __cplusplus
 #undef iswdigit
 #define iswdigit(a) (0 ? iswdigit(a) : ((unsigned)(a)-'0') < 10)
-#endif
 #endif
 
 #ifdef __cplusplus

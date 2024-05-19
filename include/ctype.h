@@ -38,10 +38,6 @@ static __inline int __isspace(int _c)
 #endif
 
 
-#if defined(_POSIX_SOURCE) || defined(_POSIX_C_SOURCE) \
- || defined(_XOPEN_SOURCE) || defined(_GNU_SOURCE) \
- || defined(_BSD_SOURCE)
-
 #define __NEED_locale_t
 #include <bits/alltypes.h>
 
@@ -66,8 +62,6 @@ int   toascii(int);
 #define _toupper(a) ((a)&0x5f)
 #ifndef __cplusplus
 #define isascii(a) (0 ? isascii(a) : (unsigned)(a) < 128)
-#endif
-
 #endif
 
 #ifdef __cplusplus

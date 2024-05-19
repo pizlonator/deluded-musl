@@ -16,11 +16,7 @@ extern "C" {
 #endif
 
 #define __NEED_size_t
-#if defined(_POSIX_SOURCE) || defined(_POSIX_C_SOURCE) \
- || defined(_XOPEN_SOURCE) || defined(_GNU_SOURCE) \
- || defined(_BSD_SOURCE)
 #define __NEED_locale_t
-#endif
 
 #include <bits/alltypes.h>
 
@@ -59,9 +55,6 @@ char *strerror (int);
 #include <strings.h>
 #endif
 
-#if defined(_POSIX_SOURCE) || defined(_POSIX_C_SOURCE) \
- || defined(_XOPEN_SOURCE) || defined(_GNU_SOURCE) \
- || defined(_BSD_SOURCE)
 char *strtok_r (char *__restrict, const char *__restrict, char **__restrict);
 int strerror_r (int, char *, size_t);
 char *stpcpy(char *__restrict, const char *__restrict);
@@ -74,7 +67,6 @@ char *strerror_l (int, locale_t);
 int strcoll_l (const char *, const char *, locale_t);
 size_t strxfrm_l (char *__restrict, const char *__restrict, size_t, locale_t);
 void *memmem(const void *, size_t, const void *, size_t);
-#endif
 
 #if defined(_XOPEN_SOURCE) || defined(_GNU_SOURCE) \
  || defined(_BSD_SOURCE)

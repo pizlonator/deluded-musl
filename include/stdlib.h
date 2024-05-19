@@ -84,10 +84,6 @@ size_t __ctype_get_mb_cur_max(void);
 #define RAND_MAX (0x7fffffff)
 
 
-#if defined(_POSIX_SOURCE) || defined(_POSIX_C_SOURCE) \
- || defined(_XOPEN_SOURCE) || defined(_GNU_SOURCE) \
- || defined(_BSD_SOURCE)
-
 #define WNOHANG    1
 #define WUNTRACED  2
 
@@ -107,11 +103,7 @@ char *mkdtemp (char *);
 int getsubopt (char **, char *const *, char **);
 int rand_r (unsigned *);
 
-#endif
 
-
-#if defined(_XOPEN_SOURCE) || defined(_GNU_SOURCE) \
- || defined(_BSD_SOURCE)
 char *realpath (const char *__restrict, char *__restrict);
 long int random (void);
 void srandom (unsigned int);
@@ -134,7 +126,6 @@ long jrand48 (unsigned short [3]);
 void srand48 (long);
 unsigned short *seed48 (unsigned short [3]);
 void lcong48 (unsigned short [7]);
-#endif
 
 #if defined(_GNU_SOURCE) || defined(_BSD_SOURCE)
 #include <alloca.h>

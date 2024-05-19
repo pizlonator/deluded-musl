@@ -55,10 +55,6 @@ struct lconv {
 char *setlocale (int, const char *);
 struct lconv *localeconv(void);
 
-
-#if defined(_POSIX_SOURCE) || defined(_POSIX_C_SOURCE) \
- || defined(_XOPEN_SOURCE) || defined(_GNU_SOURCE) || defined(_BSD_SOURCE)
-
 #define __NEED_locale_t
 
 #include <bits/alltypes.h>
@@ -77,9 +73,6 @@ locale_t duplocale(locale_t);
 void freelocale(locale_t);
 locale_t newlocale(int, const char *, locale_t);
 locale_t uselocale(locale_t);
-
-#endif
-
 
 #ifdef __cplusplus
 }

@@ -4,7 +4,7 @@
 
 locale_t __uselocale(locale_t new)
 {
-	pthread_t self = __pthread_self();
+    internal_thread_data* self = get_internal_thread_data();
 	locale_t old = self->locale;
 	locale_t global = &libc.global_locale;
 

@@ -166,7 +166,7 @@ lib/libc.so: $(LOBJS) $(LDSO_OBJS)
 	-Wl,-e,_dlstart -o $@ $(LOBJS) $(LDSO_OBJS) $(LIBCC)
 
 lib/libpizlonated_c.dylib: $(LOBJS) $(LDSO_OBJS)
-	xcrun $(CC) $(CFLAGS_ALL) $(LDFLAGS_ALL) -dynamiclib \
+	$(CC) $(CFLAGS_ALL) $(LDFLAGS_ALL) -dynamiclib \
 	-o $@ $(LOBJS) $(LDSO_OBJS) $(LIBCC) -nostdlib
 
 lib/libc.a: $(AOBJS)

@@ -68,7 +68,7 @@ EMPTY_LIBS = $(EMPTY_LIB_NAMES:%=lib/lib%.a)
 CRT_LIBS = $(addprefix lib/,$(notdir $(CRT_OBJS)))
 STATIC_LIBS = lib/libc.a
 #SHARED_LIBS = lib/libc.so
-SHARED_LIBS = lib/libpizlonated_c.dylib
+SHARED_LIBS = lib/libpizlonated_c.$(DYLIB_EXT)
 TOOL_LIBS = lib/musl-gcc.specs
 ALL_LIBS = $(SHARED_LIBS) $(EMPTY_LIBS) $(TOOL_LIBS)
 ALL_TOOLS = obj/musl-gcc
@@ -161,18 +161,9 @@ obj/%.lo: $(srcdir)/%.S
 obj/%.lo: $(srcdir)/%.c $(GENH) $(IMPH)
 	$(CC_CMD)
 
-lib/libc.so: $(LOBJS) $(LDSO_OBJS)
-	$(CC) $(CFLAGS_ALL) $(LDFLAGS_ALL) -nostdlib -shared \
-	-Wl,-e,_dlstart -o $@ $(LOBJS) $(LDSO_OBJS) $(LIBCC)
-
-lib/libpizlonated_c.dylib: $(LOBJS) $(LDSO_OBJS)
-	$(CC) $(CFLAGS_ALL) $(LDFLAGS_ALL) -dynamiclib \
+lib/libpizlonated_c.$(DYLIB_EXT): $(LOBJS) $(LDSO_OBJS)
+	$(CC) $(CFLAGS_ALL) $(LDFLAGS_ALL) $(DYLIB_OPT) \
 	-o $@ $(LOBJS) $(LDSO_OBJS) $(LIBCC) -nostdlib
-
-lib/libc.a: $(AOBJS)
-	rm -f $@
-	$(AR) rc $@ $(AOBJS)
-	$(RANLIB) $@
 
 $(EMPTY_LIBS):
 	rm -f $@
@@ -198,10 +189,7 @@ obj/%-clang: $(srcdir)/tools/%-clang.in config.mak
 $(DESTDIR)$(bindir)/%: obj/%
 	$(INSTALL) -D $< $@
 
-$(DESTDIR)$(libdir)/%.so: lib/%.so
-	$(INSTALL) -D -m 755 $< $@
-
-$(DESTDIR)$(libdir)/%.dylib: lib/%.dylib
+$(DESTDIR)$(libdir)/%.$(DYLIB_EXT): lib/%.$(DYLIB_EXT)
 	$(INSTALL) -D -m 755 $< $@
 
 $(DESTDIR)$(libdir)/%: lib/%
@@ -218,9 +206,6 @@ $(DESTDIR)$(includedir)/bits/%: obj/include/bits/%
 
 $(DESTDIR)$(includedir)/%: $(srcdir)/include/%
 	$(INSTALL) -D -m 644 $< $@
-
-$(DESTDIR)$(LDSO_PATHNAME): $(DESTDIR)$(libdir)/libpizlonated_c.dylib
-	$(INSTALL) -D -l $(libdir)/libpizlonated_c.dylib $@ || true
 
 install-libs: $(ALL_LIBS:lib/%=$(DESTDIR)$(libdir)/%)
 
@@ -240,7 +225,7 @@ endif
 
 clean:
 	rm -rf obj lib
-	rm -f lib/libpizlonated_c.dylib
+	rm -f lib/libpizlonated_c.$(DYLIB_EXT)
 
 distclean: clean
 	rm -f config.mak

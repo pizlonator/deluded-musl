@@ -44,6 +44,7 @@ static int __utmpxname(const char *f)
 	return -1;
 }
 
+#ifdef __PIZLONATED_APPLE__
 struct lastlogx *getlastlogx(uid_t uid, struct lastlogx *lastlogx)
 {
     return zsys_getlastlogx(uid, lastlogx);
@@ -53,6 +54,7 @@ struct lastlogx *getlastlogxbyname(const char* name, struct lastlogx *lastlogx)
 {
     return zsys_getlastlogxbyname(name, lastlogx);
 }
+#endif /* __PIZLONATED_APPLE__ */
 
 weak_alias(endutxent, endutent);
 weak_alias(setutxent, setutent);

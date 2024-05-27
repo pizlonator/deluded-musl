@@ -33,11 +33,13 @@ struct utmpx {
 	char __unused[20];
 };
 
+#ifdef __PIZLONATED_APPLE__
 struct lastlogx {
 	struct timeval ll_tv;
 	char ll_line[32];
 	char ll_host[256];
 };
+#endif /* __PIZLONATED_APPLE__ */
 
 void          endutxent(void);
 struct utmpx *getutxent(void);
@@ -46,8 +48,10 @@ struct utmpx *getutxline(const struct utmpx *);
 struct utmpx *pututxline(const struct utmpx *);
 void          setutxent(void);
 
+#ifdef __PIZLONATED_APPLE__
 struct lastlogx *getlastlogx(uid_t, struct lastlogx *);
 struct lastlogx *getlastlogxbyname(const char*, struct lastlogx *);
+#endif /* __PIZLONATED_APPLE__ */
 
 #if defined(_BSD_SOURCE) || defined(_GNU_SOURCE)
 #define e_exit __e_exit

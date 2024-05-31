@@ -7,7 +7,13 @@ int pclose(FILE *f)
 	int status, r;
 	pid_t pid = f->pipe_pid;
 	fclose(f);
-	while ((r=__syscall(SYS_wait4, pid, &status, 0, 0)) == -EINTR);
-	if (r<0) return __syscall_ret(r);
+    for (;;) {
+        r = zsys_waitpid(pid, &status, 0);
+        ZASSERT(r == pid || r == -1);
+        if (r == pid)
+            break;
+        if (errno != EINTR)
+            return -1;
+    }
 	return status;
 }

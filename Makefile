@@ -68,7 +68,7 @@ EMPTY_LIBS = $(EMPTY_LIB_NAMES:%=lib/lib%.a)
 CRT_LIBS = $(addprefix lib/,$(notdir $(CRT_OBJS)))
 STATIC_LIBS = lib/libc.a
 #SHARED_LIBS = lib/libc.so
-SHARED_LIBS = lib/libpizlonated_c.$(DYLIB_EXT)
+SHARED_LIBS = lib/lib$(LIBC_PREFIX)c.$(DYLIB_EXT)
 TOOL_LIBS = lib/musl-gcc.specs
 ALL_LIBS = $(SHARED_LIBS) $(EMPTY_LIBS) $(TOOL_LIBS)
 ALL_TOOLS = obj/musl-gcc
@@ -161,7 +161,7 @@ obj/%.lo: $(srcdir)/%.S
 obj/%.lo: $(srcdir)/%.c $(GENH) $(IMPH)
 	$(CC_CMD)
 
-lib/libpizlonated_c.$(DYLIB_EXT): $(LOBJS) $(LDSO_OBJS)
+lib/lib$(LIBC_PREFIX)c.$(DYLIB_EXT): $(LOBJS) $(LDSO_OBJS)
 	$(CC) $(CFLAGS_ALL) $(LDFLAGS_ALL) $(DYLIB_OPT) \
 	-o $@ $(LOBJS) $(LDSO_OBJS) $(LIBCC) -nostdlib
 
@@ -225,7 +225,7 @@ endif
 
 clean:
 	rm -rf obj lib
-	rm -f lib/libpizlonated_c.$(DYLIB_EXT)
+	rm -f lib/lib$(LIBC_PREFIX)c.$(DYLIB_EXT)
 
 distclean: clean
 	rm -f config.mak

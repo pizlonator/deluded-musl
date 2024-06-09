@@ -145,6 +145,7 @@ clang_wrapper=no
 malloc_dir=mallocng
 DYLIB_EXT=
 DYLIB_OPT=
+LIBC_PREFIX=
 
 for arg ; do
 case "$arg" in
@@ -180,6 +181,7 @@ case "$arg" in
 --build=*) build=${arg#*=} ;;
 --dylib-ext=*) DYLIB_EXT=${arg#*=} ;;
 --dylib-opt=*) DYLIB_OPT=${arg#*=} ;;
+--libc-prefix=*) LIBC_PREFIX=${arg#*=} ;;
 -* ) echo "$0: unknown option $arg" ;;
 AR=*) AR=${arg#*=} ;;
 RANLIB=*) RANLIB=${arg#*=} ;;
@@ -795,6 +797,7 @@ ADD_CFI = $ADD_CFI
 MALLOC_DIR = $malloc_dir
 DYLIB_EXT = $DYLIB_EXT
 DYLIB_OPT = $DYLIB_OPT
+LIBC_PREFIX = $LIBC_PREFIX
 EOF
 test "x$static" = xno && echo "STATIC_LIBS ="
 test "x$shared" = xno && echo "SHARED_LIBS ="

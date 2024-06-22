@@ -3,5 +3,15 @@
 
 _Noreturn void longjmp(jmp_buf buf, int value)
 {
-    zerror("longjmp is disallowed");
+    zlongjmp((zjmp_buf*)buf[0].__p, value);
+}
+
+_Noreturn void _longjmp(jmp_buf buf, int value)
+{
+    z_longjmp((zjmp_buf*)buf[0].__p, value);
+}
+
+_Noreturn void siglongjmp(sigjmp_buf buf, int value)
+{
+    zsiglongjmp((zjmp_buf*)buf[0].__p, value);
 }

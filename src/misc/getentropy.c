@@ -2,7 +2,7 @@
 #include <unistd.h>
 #include <pthread.h>
 #include <errno.h>
-#include <stdfil.h>
+#include <pizlonated_musl_syscalls.h>
 
 int getentropy(void *buffer, size_t len)
 {

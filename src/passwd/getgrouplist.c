@@ -8,7 +8,7 @@
 #include <byteswap.h>
 #include <errno.h>
 #include "nscd.h"
-#include <stdfil.h>
+#include <pizlonated_musl_syscalls.h>
 
 int getgrouplist(const char *user, gid_t gid, gid_t *groups, int *ngroups)
 {

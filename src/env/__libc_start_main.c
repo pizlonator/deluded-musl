@@ -8,7 +8,7 @@
 #include "dynlink.h"
 #include "libc.h"
 #include <errno.h>
-#include <stdfil.h>
+#include <pizlonated_runtime.h>
 
 static void dummy(void) {}
 weak_alias(dummy, _init);

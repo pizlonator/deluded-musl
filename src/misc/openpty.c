@@ -4,7 +4,7 @@
 #include <pty.h>
 #include <stdio.h>
 #include <pthread.h>
-#include <stdfil.h>
+#include <pizlonated_musl_syscalls.h>
 
 int openpty(int *pm, int *ps, char *name, const struct termios *tio, const struct winsize *ws)
 {

@@ -3,7 +3,7 @@
 #include <stddef.h>
 #include "__dirent.h"
 #include "syscall.h"
-#include <stdfil.h>
+#include <pizlonated_musl_syscalls.h>
 
 struct dirent *readdir(DIR *dir)
 {

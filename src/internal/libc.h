@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <limits.h>
 #include <stdfil.h>
+#include <pizlonated_musl_syscalls.h>
 
 struct __locale_map;
 

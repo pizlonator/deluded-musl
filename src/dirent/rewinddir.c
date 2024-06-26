@@ -2,7 +2,7 @@
 #include <unistd.h>
 #include "__dirent.h"
 #include "lock.h"
-#include <stdfil.h>
+#include <pizlonated_musl_syscalls.h>
 
 void rewinddir(DIR *dir)
 {

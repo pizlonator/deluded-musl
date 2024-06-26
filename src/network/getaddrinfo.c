@@ -8,7 +8,7 @@
 #include <endian.h>
 #include <errno.h>
 #include "lookup.h"
-#include <stdfil.h>
+#include <pizlonated_musl_syscalls.h>
 
 int getaddrinfo(const char *restrict host, const char *restrict serv, const struct addrinfo *restrict hint, struct addrinfo **restrict res)
 {

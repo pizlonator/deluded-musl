@@ -9,5 +9,5 @@ void *calloc(size_t m, size_t n)
 		return 0;
 	}
 	n *= m;
-	return zalloc(n); /* zalloc zeroes memory alraedy */
+	return zgc_alloc(n); /* zgc_alloc zeroes memory alraedy */
 }

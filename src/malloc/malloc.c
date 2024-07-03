@@ -3,5 +3,5 @@
 
 void* malloc(size_t size)
 {
-    return zalloc(size);
+    return zgc_alloc(size);
 }

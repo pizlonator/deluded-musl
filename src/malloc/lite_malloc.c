@@ -3,6 +3,6 @@
 
 void *__libc_malloc(size_t n)
 {
-    return zalloc(n);
+    return zgc_alloc(n);
 }
 

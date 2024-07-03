@@ -217,7 +217,7 @@ void __qsort_r(void *base, size_t nel, size_t width, cmpfun cmp, void *arg)
 		head -= width;
 	}
 
-        zfree(tmp);
+        zgc_free(tmp);
 }
 
 weak_alias(__qsort_r, qsort_r);

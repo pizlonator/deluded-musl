@@ -9,9 +9,9 @@ void freeaddrinfo(struct addrinfo *p)
 {
     while (p) {
         struct addrinfo* next = p->ai_next;
-        zfree(p->ai_addr);
-        zfree(p->ai_canonname);
-        zfree(p);
+        zgc_free(p->ai_addr);
+        zgc_free(p->ai_canonname);
+        zgc_free(p);
         p = next;
     }
 }

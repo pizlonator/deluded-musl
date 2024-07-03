@@ -9,7 +9,7 @@ void* __libc_calloc(size_t size, size_t count)
         return NULL;
     }
 
-    return zalloc(size); /* zalloc already zeroes memory */
+    return zgc_alloc(size); /* zgc_alloc already zeroes memory */
 }
 
 

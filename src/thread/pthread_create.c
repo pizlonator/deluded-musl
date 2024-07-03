@@ -33,7 +33,7 @@ static void* start(void* p)
     set_new_internal_thread_data();
     void* (*start_func)(void*) = args->start_func;
     void* start_arg = args->start_arg;
-    zfree(args);
+    zgc_free(args);
     void* result = start_func(start_arg);
 
     internal_thread_data* data = get_internal_thread_data();
@@ -67,12 +67,12 @@ static void* start(void* p)
 int __pthread_create(pthread_t *restrict res, const pthread_attr_t *restrict attrp, void *(*entry)(void *), void *restrict arg)
 {
     ZASSERT(!attrp);
-    struct start_args* args = zalloc(sizeof(struct start_args));
+    struct start_args* args = zgc_alloc(sizeof(struct start_args));
     args->start_func = entry;
     args->start_arg = arg;
     void* thread = zthread_create(start, args);
     if (!thread) {
-        zfree(args);
+        zgc_free(args);
         return errno;
     }
     *res = thread;

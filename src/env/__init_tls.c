@@ -15,8 +15,8 @@ volatile int __thread_list_lock;
 hidden void destroy_internal_thread_data()
 {
     internal_thread_data* data = get_internal_thread_data();
-    zfree(data->dlerror_string);
-    zfree(data);
+    zgc_free(data->dlerror_string);
+    zgc_free(data);
 }
 
 hidden void __init_tls(void)
@@ -34,7 +34,7 @@ hidden internal_thread_data* get_internal_thread_data(void)
 hidden void set_new_internal_thread_data(void)
 {
     ZASSERT(!zthread_self_cookie());
-    internal_thread_data* data = (internal_thread_data*)zalloc(sizeof(internal_thread_data));
+    internal_thread_data* data = (internal_thread_data*)zgc_alloc(sizeof(internal_thread_data));
     data->the_errno = 0;
     data->locale = &libc.global_locale;
     data->thread_locals = NULL;

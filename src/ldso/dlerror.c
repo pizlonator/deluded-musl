@@ -27,11 +27,11 @@ hidden void __dl_vseterr(const char *fmt, va_list ap)
 	va_copy(ap2, ap);
         internal_thread_data* data = get_internal_thread_data();
         if (data->dlerror_string)
-            zfree(data->dlerror_string);
+            zgc_free(data->dlerror_string);
 	size_t len = vsnprintf(0, 0, fmt, ap2);
 	if (len < sizeof(void *)) len = sizeof(void *);
 	va_end(ap2);
-	char *buf = (char*)zalloc(len+1);
+	char *buf = (char*)zgc_alloc(len+1);
         ZASSERT(buf);
         vsnprintf(buf, len+1, fmt, ap);
         data->dlerror_string = buf;

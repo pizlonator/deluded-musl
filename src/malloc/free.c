@@ -3,10 +3,10 @@
 
 void free(void *p)
 {
-    zfree(p);
+    zgc_free(p);
 }
 
 void __libc_free(void *p)
 {
-    zfree(p);
+    zgc_free(p);
 }

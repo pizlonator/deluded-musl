@@ -3,5 +3,5 @@
 
 void *realloc(void *p, size_t n)
 {
-    return zrealloc(p, n);
+    return zgc_realloc(p, n);
 }

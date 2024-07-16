@@ -13,21 +13,25 @@ void setutxent(void)
 
 struct utmpx *getutxent(void)
 {
+	errno = ENOTSUP;
 	return NULL;
 }
 
 struct utmpx *getutxid(const struct utmpx *ut)
 {
+	errno = ENOTSUP;
 	return NULL;
 }
 
 struct utmpx *getutxline(const struct utmpx *ut)
 {
+	errno = ENOTSUP;
 	return NULL;
 }
 
 struct utmpx *pututxline(const struct utmpx *ut)
 {
+	errno = ENOTSUP;
 	return NULL;
 }
 

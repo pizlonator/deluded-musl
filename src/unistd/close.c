@@ -2,6 +2,7 @@
 #include <errno.h>
 #include "aio_impl.h"
 #include "syscall.h"
+#include <stdfil.h>
 
 static int dummy(int fd)
 {
@@ -13,7 +14,10 @@ weak_alias(dummy, __aio_close);
 int close(int fd)
 {
 	fd = __aio_close(fd);
-	int r = __syscall_cp(SYS_close, fd);
-	if (r == -EINTR) r = 0;
-	return __syscall_ret(r);
+        return zsys_close(fd);
+
+        // WTF, do we need this thing about EINTR?
+	//int r = __syscall_cp(SYS_close, fd);
+	//if (r == -EINTR) r = 0;
+	//return __syscall_ret(r);
 }

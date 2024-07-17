@@ -1,7 +1,8 @@
 #include <unistd.h>
 #include "syscall.h"
+#include <stdfil.h>
 
 int dup(int fd)
 {
-	return syscall(SYS_dup, fd);
+	return zsys_dup(fd);
 }

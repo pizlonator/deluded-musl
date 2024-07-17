@@ -5,6 +5,8 @@
 #include <errno.h>
 #include <sys/syscall.h>
 #include "syscall_arch.h"
+#include <stdfil.h>
+#include <pizlonated_musl_syscalls.h>
 
 #ifndef SYSCALL_RLIM_INFINITY
 #define SYSCALL_RLIM_INFINITY (~0ULL)
@@ -27,13 +29,13 @@ hidden long __syscall_ret(unsigned long),
 	__syscall_cp(syscall_arg_t, syscall_arg_t, syscall_arg_t, syscall_arg_t,
 	             syscall_arg_t, syscall_arg_t, syscall_arg_t);
 
-#define __syscall1(n,a) __syscall1(n,__scc(a))
-#define __syscall2(n,a,b) __syscall2(n,__scc(a),__scc(b))
-#define __syscall3(n,a,b,c) __syscall3(n,__scc(a),__scc(b),__scc(c))
-#define __syscall4(n,a,b,c,d) __syscall4(n,__scc(a),__scc(b),__scc(c),__scc(d))
-#define __syscall5(n,a,b,c,d,e) __syscall5(n,__scc(a),__scc(b),__scc(c),__scc(d),__scc(e))
-#define __syscall6(n,a,b,c,d,e,f) __syscall6(n,__scc(a),__scc(b),__scc(c),__scc(d),__scc(e),__scc(f))
-#define __syscall7(n,a,b,c,d,e,f,g) __syscall7(n,__scc(a),__scc(b),__scc(c),__scc(d),__scc(e),__scc(f),__scc(g))
+#define __syscall0(n) ({ zerrorf("%s:%d: %s: bad syscall: %s", __FILE__, __LINE__, __PRETTY_FUNCTION__, #n); 0; })
+#define __syscall1(n, a0) ({ zerrorf("%s:%d: %s: bad syscall: %s, %s", __FILE__, __LINE__, __PRETTY_FUNCTION__, #n, #a0); 0; })
+#define __syscall2(n, a0, a1) ({ zerrorf("%s:%d: %s: bad syscall: %s, %s, %s", __FILE__, __LINE__, __PRETTY_FUNCTION__, #n, #a0, #a1); 0; })
+#define __syscall3(n, a0, a1, a2) ({ zerrorf("%s:%d: %s: bad syscall: %s, %s, %s, %s", __FILE__, __LINE__, __PRETTY_FUNCTION__, #n, #a0, #a1, #a2); 0; })
+#define __syscall4(n, a0, a1, a2, a3) ({ zerrorf("%s:%d: %s: bad syscall: %s, %s, %s, %s, %s", __FILE__, __LINE__, __PRETTY_FUNCTION__, #n, #a0, #a1, #a2, #a3); 0; })
+#define __syscall5(n, a0, a1, a2, a3, a4) ({ zerrorf("%s:%d: %s: bad syscall: %s, %s, %s, %s, %s, %s", __FILE__, __LINE__, __PRETTY_FUNCTION__, #n, #a0, #a1, #a2, #a3, #a4); 0; })
+#define __syscall6(n, a0, a1, a2, a3, a4, a5) ({ zerrorf("%s:%d: %s: bad syscall: %s, %s, %s, %s, %s, %s, %s", __FILE__, __LINE__, __PRETTY_FUNCTION__, #n, #a0, #a1, #a2, #a3, #a4, #a5); 0; })
 
 #define __SYSCALL_NARGS_X(a,b,c,d,e,f,g,h,n,...) n
 #define __SYSCALL_NARGS(...) __SYSCALL_NARGS_X(__VA_ARGS__,7,6,5,4,3,2,1,0,)
@@ -47,29 +49,18 @@ hidden long __syscall_ret(unsigned long),
 #define socketcall(nm,a,b,c,d,e,f) __syscall_ret(__socketcall(nm,a,b,c,d,e,f))
 #define socketcall_cp(nm,a,b,c,d,e,f) __syscall_ret(__socketcall_cp(nm,a,b,c,d,e,f))
 
-#define __syscall_cp0(n) (__syscall_cp)(n,0,0,0,0,0,0)
-#define __syscall_cp1(n,a) (__syscall_cp)(n,__scc(a),0,0,0,0,0)
-#define __syscall_cp2(n,a,b) (__syscall_cp)(n,__scc(a),__scc(b),0,0,0,0)
-#define __syscall_cp3(n,a,b,c) (__syscall_cp)(n,__scc(a),__scc(b),__scc(c),0,0,0)
-#define __syscall_cp4(n,a,b,c,d) (__syscall_cp)(n,__scc(a),__scc(b),__scc(c),__scc(d),0,0)
-#define __syscall_cp5(n,a,b,c,d,e) (__syscall_cp)(n,__scc(a),__scc(b),__scc(c),__scc(d),__scc(e),0)
-#define __syscall_cp6(n,a,b,c,d,e,f) (__syscall_cp)(n,__scc(a),__scc(b),__scc(c),__scc(d),__scc(e),__scc(f))
+#define __syscall_cp0(n) ({ zerrorf("%s:%d: %s: bad syscall: %s", __FILE__, __LINE__, __PRETTY_FUNCTION__, #n); 0; })
+#define __syscall_cp1(n, a0) ({ zerrorf("%s:%d: %s: bad syscall: %s, %s", __FILE__, __LINE__, __PRETTY_FUNCTION__, #n, #a0); 0; })
+#define __syscall_cp2(n, a0, a1) ({ zerrorf("%s:%d: %s: bad syscall: %s, %s, %s", __FILE__, __LINE__, __PRETTY_FUNCTION__, #n, #a0, #a1); 0; })
+#define __syscall_cp3(n, a0, a1, a2) ({ zerrorf("%s:%d: %s: bad syscall: %s, %s, %s, %s", __FILE__, __LINE__, __PRETTY_FUNCTION__, #n, #a0, #a1, #a2); 0; })
+#define __syscall_cp4(n, a0, a1, a2, a3) ({ zerrorf("%s:%d: %s: bad syscall: %s, %s, %s, %s, %s", __FILE__, __LINE__, __PRETTY_FUNCTION__, #n, #a0, #a1, #a2, #a3); 0; })
+#define __syscall_cp5(n, a0, a1, a2, a3, a4) ({ zerrorf("%s:%d: %s: bad syscall: %s, %s, %s, %s, %s, %s", __FILE__, __LINE__, __PRETTY_FUNCTION__, #n, #a0, #a1, #a2, #a3, #a4); 0; })
+#define __syscall_cp6(n, a0, a1, a2, a3, a4, a5) ({ zerrorf("%s:%d: %s: bad syscall: %s, %s, %s, %s, %s, %s, %s", __FILE__, __LINE__, __PRETTY_FUNCTION__, #n, #a0, #a1, #a2, #a3, #a4, #a5); 0; })
 
 #define __syscall_cp(...) __SYSCALL_DISP(__syscall_cp,__VA_ARGS__)
 #define syscall_cp(...) __syscall_ret(__syscall_cp(__VA_ARGS__))
 
-static inline long __alt_socketcall(int sys, int sock, int cp, syscall_arg_t a, syscall_arg_t b, syscall_arg_t c, syscall_arg_t d, syscall_arg_t e, syscall_arg_t f)
-{
-	long r;
-	if (cp) r = __syscall_cp(sys, a, b, c, d, e, f);
-	else r = __syscall(sys, a, b, c, d, e, f);
-	if (r != -ENOSYS) return r;
-#ifdef SYS_socketcall
-	if (cp) r = __syscall_cp(SYS_socketcall, sock, ((long[6]){a, b, c, d, e, f}));
-	else r = __syscall(SYS_socketcall, sock, ((long[6]){a, b, c, d, e, f}));
-#endif
-	return r;
-}
+#define __alt_socketcall(sys, sock, cp, a, b, c, d, e, f) ({ zerrorf("%s:%d: %s: bad socketcall: %s, %s, %s, %s, %s, %s, %s, %s, %s", __FILE__, __LINE__, __PRETTY_FUNCTION__, #sys, #sock, #cp, #a, #b, #c, #d, #e, #f); 0; })
 #define __socketcall(nm, a, b, c, d, e, f) __alt_socketcall(SYS_##nm, __SC_##nm, 0, \
 	__scc(a), __scc(b), __scc(c), __scc(d), __scc(e), __scc(f))
 #define __socketcall_cp(nm, a, b, c, d, e, f) __alt_socketcall(SYS_##nm, __SC_##nm, 1, \

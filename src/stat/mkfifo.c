@@ -1,6 +1,7 @@
 #include <sys/stat.h>
+#include <pizlonated_musl_syscalls.h>
 
 int mkfifo(const char *path, mode_t mode)
 {
-	return mknod(path, mode | S_IFIFO, 0);
+	return zsys_mkfifo(path, mode);
 }

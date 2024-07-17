@@ -70,10 +70,10 @@ int __cxa_atexit(void (*func)(void *), void *arg, void *dso)
 
 static void call(void *p)
 {
-	((void (*)(void))(uintptr_t)p)();
+	((void (*)(void))p)();
 }
 
 int atexit(void (*func)(void))
 {
-	return __cxa_atexit(call, (void *)(uintptr_t)func, 0);
+	return __cxa_atexit(call, (void *)func, 0);
 }

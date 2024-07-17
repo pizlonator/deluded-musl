@@ -15,13 +15,9 @@ extern "C" {
 #define __NEED_struct__IO_FILE
 #endif
 
-#if defined(_POSIX_SOURCE) || defined(_POSIX_C_SOURCE) \
- || defined(_XOPEN_SOURCE) || defined(_GNU_SOURCE) \
- || defined(_BSD_SOURCE)
 #define __NEED_ssize_t
 #define __NEED_off_t
 #define __NEED_va_list
-#endif
 
 #include <bits/alltypes.h>
 
@@ -131,9 +127,6 @@ void setbuf(FILE *__restrict, char *__restrict);
 char *tmpnam(char *);
 FILE *tmpfile(void);
 
-#if defined(_POSIX_SOURCE) || defined(_POSIX_C_SOURCE) \
- || defined(_XOPEN_SOURCE) || defined(_GNU_SOURCE) \
- || defined(_BSD_SOURCE)
 FILE *fmemopen(void *__restrict, size_t, const char *__restrict);
 FILE *open_memstream(char **, size_t *);
 FILE *fdopen(int, const char *);
@@ -156,16 +149,11 @@ ssize_t getline(char **__restrict, size_t *__restrict, FILE *__restrict);
 int renameat(int, const char *, int, const char *);
 char *ctermid(char *);
 #define L_ctermid 20
-#endif
 
 
-#if defined(_XOPEN_SOURCE) || defined(_GNU_SOURCE) \
- || defined(_BSD_SOURCE)
 #define P_tmpdir "/tmp"
 char *tempnam(const char *, const char *);
-#endif
 
-#if defined(_GNU_SOURCE) || defined(_BSD_SOURCE)
 #define L_cuserid 20
 char *cuserid(char *);
 void setlinebuf(FILE *);
@@ -184,7 +172,6 @@ int putw(int, FILE *);
 char *fgetln(FILE *, size_t *);
 int asprintf(char **, const char *, ...);
 int vasprintf(char **, const char *, __isoc_va_list);
-#endif
 
 #ifdef _GNU_SOURCE
 char *fgets_unlocked(char *, int, FILE *);

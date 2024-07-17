@@ -1,5 +1,6 @@
 #include "stdio_impl.h"
 #include <sys/uio.h>
+#include <stdfil.h>
 
 size_t __stdio_write(FILE *f, const unsigned char *buf, size_t len)
 {
@@ -12,7 +13,7 @@ size_t __stdio_write(FILE *f, const unsigned char *buf, size_t len)
 	int iovcnt = 2;
 	ssize_t cnt;
 	for (;;) {
-		cnt = syscall(SYS_writev, f->fd, iov, iovcnt);
+		cnt = zsys_writev(f->fd, iov, iovcnt);
 		if (cnt == rem) {
 			f->wend = f->buf + f->buf_size;
 			f->wpos = f->wbase = f->buf;

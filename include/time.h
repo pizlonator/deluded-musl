@@ -21,14 +21,10 @@ extern "C" {
 #define __NEED_clock_t
 #define __NEED_struct_timespec
 
-#if defined(_POSIX_SOURCE) || defined(_POSIX_C_SOURCE) \
- || defined(_XOPEN_SOURCE) || defined(_GNU_SOURCE) \
- || defined(_BSD_SOURCE)
 #define __NEED_clockid_t
 #define __NEED_timer_t
 #define __NEED_pid_t
 #define __NEED_locale_t
-#endif
 
 #include <bits/alltypes.h>
 
@@ -66,9 +62,7 @@ int timespec_get(struct timespec *, int);
 
 #define TIME_UTC 1
 
-#if defined(_POSIX_SOURCE) || defined(_POSIX_C_SOURCE) \
- || defined(_XOPEN_SOURCE) || defined(_GNU_SOURCE) \
- || defined(_BSD_SOURCE)
+int nanosleep (const struct timespec *, struct timespec *);
 
 size_t strftime_l (char *  __restrict, size_t, const char *  __restrict, const struct tm *  __restrict, locale_t);
 
@@ -99,7 +93,6 @@ struct itimerspec {
 
 #define TIMER_ABSTIME 1
 
-int nanosleep (const struct timespec *, struct timespec *);
 int clock_getres (clockid_t, struct timespec *);
 int clock_gettime (clockid_t, struct timespec *);
 int clock_settime (clockid_t, const struct timespec *);
@@ -114,8 +107,6 @@ int timer_gettime (timer_t, struct itimerspec *);
 int timer_getoverrun (timer_t);
 
 extern char *tzname[2];
-
-#endif
 
 
 #if defined(_XOPEN_SOURCE) || defined(_BSD_SOURCE) || defined(_GNU_SOURCE)

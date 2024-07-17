@@ -84,10 +84,6 @@ size_t __ctype_get_mb_cur_max(void);
 #define RAND_MAX (0x7fffffff)
 
 
-#if defined(_POSIX_SOURCE) || defined(_POSIX_C_SOURCE) \
- || defined(_XOPEN_SOURCE) || defined(_GNU_SOURCE) \
- || defined(_BSD_SOURCE)
-
 #define WNOHANG    1
 #define WUNTRACED  2
 
@@ -107,11 +103,7 @@ char *mkdtemp (char *);
 int getsubopt (char **, char *const *, char **);
 int rand_r (unsigned *);
 
-#endif
 
-
-#if defined(_XOPEN_SOURCE) || defined(_GNU_SOURCE) \
- || defined(_BSD_SOURCE)
 char *realpath (const char *__restrict, char *__restrict);
 long int random (void);
 void srandom (unsigned int);
@@ -134,7 +126,6 @@ long jrand48 (unsigned short [3]);
 void srand48 (long);
 unsigned short *seed48 (unsigned short [3]);
 void lcong48 (unsigned short [7]);
-#endif
 
 #if defined(_GNU_SOURCE) || defined(_BSD_SOURCE)
 #include <alloca.h>
@@ -151,7 +142,6 @@ void *reallocarray (void *, size_t, size_t);
 void qsort_r (void *, size_t, size_t, int (*)(const void *, const void *, void *), void *);
 #endif
 
-#ifdef _GNU_SOURCE
 int ptsname_r(int, char *, size_t);
 char *ecvt(double, int, int *, int *);
 char *fcvt(double, int, int *, int *);
@@ -161,7 +151,6 @@ struct __locale_struct;
 float strtof_l(const char *__restrict, char **__restrict, struct __locale_struct *);
 double strtod_l(const char *__restrict, char **__restrict, struct __locale_struct *);
 long double strtold_l(const char *__restrict, char **__restrict, struct __locale_struct *);
-#endif
 
 #if defined(_LARGEFILE64_SOURCE)
 #define mkstemp64 mkstemp

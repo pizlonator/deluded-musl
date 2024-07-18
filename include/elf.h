@@ -1058,6 +1058,8 @@ typedef struct {
 
 #define AT_MINSIGSTKSZ		51
 
+#define AT_MAX_KEY              51
+
 
 typedef struct {
   Elf32_Word n_namesz;

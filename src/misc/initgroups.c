@@ -1,9 +1,11 @@
 #define _GNU_SOURCE
 #include <grp.h>
 #include <limits.h>
-#include <pizlonated_musl_syscalls.h>
 
 int initgroups(const char *user, gid_t gid)
 {
-    return zsys_initgroups(user, gid);
+	gid_t groups[NGROUPS_MAX];
+	int count = NGROUPS_MAX;
+	if (getgrouplist(user, gid, groups, &count) < 0) return -1;
+	return setgroups(count, groups);
 }

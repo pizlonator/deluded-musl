@@ -1,6 +1,6 @@
 #include <dlfcn.h>
 #include "dynlink.h"
-#include <pizlonated_common_syscalls.h>
+#include <pizlonated_syscalls.h>
 
 void *dlsym(void *restrict p, const char *restrict s)
 {

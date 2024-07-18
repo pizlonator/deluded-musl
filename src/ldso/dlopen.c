@@ -1,6 +1,6 @@
 #include <dlfcn.h>
 #include "dynlink.h"
-#include <pizlonated_common_syscalls.h>
+#include <pizlonated_syscalls.h>
 
 static void *stub_dlopen(const char *file, int mode)
 {

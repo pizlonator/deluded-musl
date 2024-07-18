@@ -6,7 +6,7 @@
 #include <sys/syscall.h>
 #include "syscall_arch.h"
 #include <stdfil.h>
-#include <pizlonated_musl_syscalls.h>
+#include <pizlonated_syscalls.h>
 
 #ifndef SYSCALL_RLIM_INFINITY
 #define SYSCALL_RLIM_INFINITY (~0ULL)

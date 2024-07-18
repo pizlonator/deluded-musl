@@ -1,5 +1,5 @@
 #include <sys/stat.h>
-#include <pizlonated_musl_syscalls.h>
+#include <pizlonated_syscalls.h>
 
 int mkfifo(const char *path, mode_t mode)
 {

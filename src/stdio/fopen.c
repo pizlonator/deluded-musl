@@ -2,7 +2,7 @@
 #include <fcntl.h>
 #include <string.h>
 #include <errno.h>
-#include <pizlonated_musl_syscalls.h>
+#include <pizlonated_syscalls.h>
 
 FILE *fopen(const char *restrict filename, const char *restrict mode)
 {

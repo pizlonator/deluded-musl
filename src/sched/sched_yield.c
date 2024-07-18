@@ -1,5 +1,5 @@
 #include <sched.h>
-#include <pizlonated_musl_syscalls.h>
+#include <pizlonated_syscalls.h>
 
 int sched_yield()
 {

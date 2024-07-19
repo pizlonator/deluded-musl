@@ -278,7 +278,7 @@ int __pthread_create(pthread_t *restrict res, const pthread_attr_t *restrict att
 			+ libc.tls_size +  __pthread_tsd_size);
 	}
 
-	new = zgc_malloc(sizeof(struct pthread));
+	new = zgc_alloc(sizeof(struct pthread));
 	new->map_base = map;
 	new->map_size = size;
 	new->stack = stack;
@@ -311,8 +311,7 @@ int __pthread_create(pthread_t *restrict res, const pthread_attr_t *restrict att
 	 * working with a copy of the set so we can restore the
 	 * original mask in the calling thread. */
 	memcpy(&args->sig_mask, &set, sizeof args->sig_mask);
-	args->sig_mask[(SIGCANCEL-1)/8/sizeof(long)] &=
-		~(1UL<<((SIGCANCEL-1)%(8*sizeof(long))));
+	ZASSERT(!sigdelset(&args->sig_mask, SIGCANCEL));
 
 	__tl_lock();
 	if (!libc.threads_minus_1++) libc.need_locks = 1;

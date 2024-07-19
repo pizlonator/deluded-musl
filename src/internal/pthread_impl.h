@@ -87,16 +87,16 @@ enum {
 #define _m_type __u.__i[0]
 #define _m_lock __u.__vi[1]
 #define _m_waiters __u.__vi[2]
-#define _m_prev __u.__p[3]
-#define _m_next __u.__p[4]
-#define _m_count __u.__i[5]
-#define _c_shared __u.__p[0]
-#define _c_seq __u.__vi[2]
-#define _c_waiters __u.__vi[3]
-#define _c_clock __u.__i[4]
-#define _c_lock __u.__vi[8]
-#define _c_head __u.__p[1]
-#define _c_tail __u.__p[5]
+#define _m_prev __p[0]
+#define _m_next __p[1]
+#define _m_count __u.__i[3]
+#define _c_shared __u.__i[0]
+#define _c_seq __u.__vi[1]
+#define _c_waiters __u.__vi[2]
+#define _c_clock __u.__i[3]
+#define _c_lock __u.__vi[4]
+#define _c_head __p[1]
+#define _c_tail __p[2]
 #define _rw_lock __u.__vi[0]
 #define _rw_waiters __u.__vi[1]
 #define _rw_shared __u.__i[2]
@@ -105,7 +105,7 @@ enum {
 #define _b_limit __u.__i[2]
 #define _b_count __u.__vi[3]
 #define _b_waiters2 __u.__vi[4]
-#define _b_inst __u.__p[3]
+#define _b_inst __p[0]
 
 #ifndef TP_OFFSET
 #define TP_OFFSET 0
@@ -135,7 +135,6 @@ enum {
 
 void *__tls_get_addr(tls_mod_off_t *);
 hidden int __init_tp(void *);
-hidden void *__copy_tls(unsigned char *);
 hidden void __reset_tls();
 
 hidden void __membarrier_init(void);

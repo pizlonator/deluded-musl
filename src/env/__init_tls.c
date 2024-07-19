@@ -28,11 +28,6 @@ int __init_tp(void *p)
 
 struct pthread builtin_pt;
 
-void *__copy_tls(unsigned char *mem)
-{
-	return mem;
-}
-
 #if ULONG_MAX == 0xffffffff
 typedef Elf32_Phdr Phdr;
 #else

@@ -1,22 +1,5 @@
 #include "pthread_impl.h"
-
-#define IS32BIT(x) !((x)+0x80000000ULL>>32)
-#define CLAMP(x) (int)(IS32BIT(x) ? (x) : 0x7fffffffU+((0ULL+(x))>>63))
-
-static int __futex4(volatile void *addr, int op, int val, const struct timespec *to)
-{
-#ifdef SYS_futex_time64
-	time_t s = to ? to->tv_sec : 0;
-	long ns = to ? to->tv_nsec : 0;
-	int r = -ENOSYS;
-	if (SYS_futex == SYS_futex_time64 || !IS32BIT(s))
-		r = __syscall(SYS_futex_time64, addr, op, val,
-			to ? ((long long[]){s, ns}) : 0);
-	if (SYS_futex == SYS_futex_time64 || r!=-ENOSYS) return r;
-	to = to ? (void *)(long[]){CLAMP(s), ns} : 0;
-#endif
-	return __syscall(SYS_futex, addr, op, val, to);
-}
+#include "futex_calls.h"
 
 static int pthread_mutex_timedlock_pi(pthread_mutex_t *restrict m, const struct timespec *restrict at)
 {
@@ -27,7 +10,7 @@ static int pthread_mutex_timedlock_pi(pthread_mutex_t *restrict m, const struct 
 
 	if (!priv) self->robust_list.pending = &m->_m_next;
 
-	do e = -__futex4(&m->_m_lock, FUTEX_LOCK_PI|priv, 0, at);
+	do e = -futex_lock_pi(&m->_m_lock, priv, at);
 	while (e==EINTR);
 	if (e) self->robust_list.pending = 0;
 

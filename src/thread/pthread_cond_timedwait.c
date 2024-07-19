@@ -1,4 +1,5 @@
 #include "pthread_impl.h"
+#include <futex_calls.h>
 
 /*
  * struct waiter
@@ -49,8 +50,7 @@ static inline void unlock_requeue(volatile int *l, volatile int *r, int w)
 {
 	a_store(l, 0);
 	if (w) __wake(l, 1, 1);
-	else __syscall(SYS_futex, l, FUTEX_REQUEUE|FUTEX_PRIVATE, 0, 1, r) != -ENOSYS
-		|| __syscall(SYS_futex, l, FUTEX_REQUEUE, 0, 1, r);
+	else futex_requeue(l, 1, 0, 1, r);
 }
 
 enum {

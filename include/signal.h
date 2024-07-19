@@ -297,6 +297,10 @@ __REDIR(sigtimedwait, __sigtimedwait_time64);
 #endif
 #endif
 
+#define SIGTIMER 32
+#define SIGCANCEL 33
+#define SIGSYNCCALL 34
+
 #ifdef __cplusplus
 }
 #endif

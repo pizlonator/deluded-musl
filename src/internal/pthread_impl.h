@@ -126,10 +126,6 @@ enum {
 #define tls_mod_off_t size_t
 #endif
 
-#define SIGTIMER 32
-#define SIGCANCEL 33
-#define SIGSYNCCALL 34
-
 #define SIGALL_SET ((sigset_t *)(const unsigned long long [2]){ -1,-1 })
 #define SIGPT_SET \
 	((sigset_t *)(const unsigned long [_NSIG/8/sizeof(long)]){ \

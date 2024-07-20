@@ -22,6 +22,7 @@ static int tl_lock_waiters;
 void __tl_lock(void)
 {
 	int tid = __pthread_self()->tid;
+	ZASSERT(tid);
 	int val = __thread_list_lock;
 	if (val == tid) {
 		tl_lock_count++;
@@ -113,6 +114,7 @@ _Noreturn void __pthread_exit(void *result)
 	 * see the thread as having exited. Release it now so that no
 	 * remaining locks (except thread list) are held if we end up
 	 * resetting need_locks below. */
+	ZASSERT(self->tid == zthread_self_id());
 	self->tid = 0;
 	UNLOCK(self->killlock);
 

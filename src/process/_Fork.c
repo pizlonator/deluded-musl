@@ -14,7 +14,7 @@ void __post_Fork(int ret)
 {
 	if (!ret) {
 		pthread_t self = __pthread_self();
-		self->tid = __syscall(SYS_set_tid_address, &__thread_list_lock);
+		self->tid = zthread_self_id();
 		self->robust_list.off = 0;
 		self->robust_list.pending = 0;
 		self->next = self->prev = self;
@@ -32,12 +32,10 @@ pid_t _Fork(void)
 	sigset_t set;
 	__block_all_sigs(&set);
 	LOCK(__abort_lock);
-#ifdef SYS_fork
-	ret = __syscall(SYS_fork);
-#else
-	ret = __syscall(SYS_clone, SIGCHLD, 0);
-#endif
+	ret = zsys_fork();
+	int saved_errno = errno;
 	__post_Fork(ret);
 	__restore_sigs(&set);
-	return __syscall_ret(ret);
+	errno = saved_errno;
+	return ret;
 }

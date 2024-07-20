@@ -55,18 +55,4 @@ int __membarrier(int cmd, int flags)
 	return __syscall_ret(r);
 }
 
-void __membarrier_init(void)
-{
-	/* If membarrier is linked, attempt to pre-register to be able to use
-	 * the private expedited command before the process becomes multi-
-	 * threaded, since registering later has bad, potentially unbounded
-	 * latency. This syscall should be essentially free, and it's arguably
-	 * a mistake in the API design that registration was even required.
-	 * For other commands, registration may impose some cost, so it's left
-	 * to the application to do so if desired. Unfortunately this means
-	 * library code initialized after the process becomes multi-threaded
-	 * cannot use these features without accepting registration latency. */
-	__syscall(SYS_membarrier, MEMBARRIER_CMD_REGISTER_PRIVATE_EXPEDITED, 0);
-}
-
 weak_alias(__membarrier, membarrier);

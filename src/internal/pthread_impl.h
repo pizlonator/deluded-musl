@@ -134,11 +134,12 @@ enum {
 	((sigset_t *)(const unsigned long [_NSIG/8/sizeof(long)]){ \
 	 0x80000000 })
 
+int __sigdelsetyolo(sigset_t *, int);
+
 void *__tls_get_addr(tls_mod_off_t *);
 hidden int __init_tp(void *);
 hidden void __reset_tls();
 
-hidden void __membarrier_init(void);
 hidden void __dl_thread_cleanup(void);
 hidden void __testcancel();
 hidden void __do_cleanup_push(struct __ptcb *);

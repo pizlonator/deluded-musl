@@ -15,7 +15,6 @@ weak_alias(dummy_0, __release_ptc);
 weak_alias(dummy_0, __pthread_tsd_run_dtors);
 weak_alias(dummy_0, __do_orphaned_stdio_locks);
 weak_alias(dummy_0, __dl_thread_cleanup);
-weak_alias(dummy_0, __membarrier_init);
 
 static int tl_lock_count;
 static int tl_lock_waiters;
@@ -259,7 +258,6 @@ int __pthread_create(pthread_t *restrict res, const pthread_attr_t *restrict att
 		init_file_lock(__stdout_used);
 		init_file_lock(__stderr_used);
 		self->tsd = (void **)__pthread_tsd_main;
-		__membarrier_init();
 		libc.threaded = 1;
 	}
 	if (attrp && !c11) attr = *attrp;
@@ -296,7 +294,7 @@ int __pthread_create(pthread_t *restrict res, const pthread_attr_t *restrict att
 	new->canary = self->canary;
 	new->sysinfo = self->sysinfo;
 
-	struct start_args *args = (void *)stack;
+	struct start_args *args = zgc_alloc(sizeof(struct start_args));
 	args->thread = new;
 	args->start_func = entry;
 	args->start_arg = arg;
@@ -311,15 +309,20 @@ int __pthread_create(pthread_t *restrict res, const pthread_attr_t *restrict att
 	 * working with a copy of the set so we can restore the
 	 * original mask in the calling thread. */
 	memcpy(&args->sig_mask, &set, sizeof args->sig_mask);
-	ZASSERT(!sigdelset(&args->sig_mask, SIGCANCEL));
+	ZASSERT(!__sigdelsetyolo(&args->sig_mask, SIGCANCEL));
 
 	__tl_lock();
 	if (!libc.threads_minus_1++) libc.need_locks = 1;
 	void* zthread = zthread_create((c11 ? start_c11 : start), args);
 
-	unsigned new_tid = zthread_get_id(zthread);
-	ZASSERT(!new->tid || new->tid == new_tid);
-	new->tid = new_tid;
+	if (zthread) {
+		unsigned new_tid = zthread_get_id(zthread);
+		ZASSERT(!new->tid || new->tid == new_tid);
+		new->tid = new_tid;
+		ret = 0;
+	} else {
+		ret = -errno;
+	}
 	
 	/* All clone failures translate to EAGAIN. If explicit scheduling
 	 * was requested, attempt it before unlocking the thread list so
@@ -329,7 +332,7 @@ int __pthread_create(pthread_t *restrict res, const pthread_attr_t *restrict att
 		ret = -EAGAIN;
 	} else if (attr._a_sched) {
 		ret = __syscall(SYS_sched_setscheduler,
-			new->tid, attr._a_policy, &attr._a_prio);
+			new_tid, attr._a_policy, &attr._a_prio);
 		if (a_swap(&args->control, ret ? 3 : 0)==2)
 			__wake(&args->control, 1, 1);
 		if (ret)

@@ -12,9 +12,10 @@ struct dirent *readdir(DIR *dir)
 	struct dirent *de;
 	
 	if (dir->buf_pos >= dir->buf_end) {
-		int len = __syscall(SYS_getdents, dir->fd, dir->buf, sizeof dir->buf);
+		int len = zsys_getdents(dir->fd, dir->buf, sizeof dir->buf);
 		if (len <= 0) {
-			if (len < 0 && len != -ENOENT) errno = -len;
+			if (len < 0 && errno == ENOENT)
+				errno = 0;
 			return 0;
 		}
 		dir->buf_end = len;

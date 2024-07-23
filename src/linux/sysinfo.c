@@ -3,7 +3,7 @@
 
 int __lsysinfo(struct sysinfo *info)
 {
-	return syscall(SYS_sysinfo, info);
+	return zsys_sysinfo(info);
 }
 
 weak_alias(__lsysinfo, sysinfo);

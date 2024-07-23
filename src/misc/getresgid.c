@@ -4,5 +4,5 @@
 
 int getresgid(gid_t *rgid, gid_t *egid, gid_t *sgid)
 {
-	return syscall(SYS_getresgid, rgid, egid, sgid);
+	return zsys_getresgid(rgid, egid, sgid);
 }

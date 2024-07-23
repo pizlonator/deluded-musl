@@ -39,7 +39,6 @@ enum EPOLL_EVENTS { __EPOLL_DUMMY };
 #define EPOLL_CTL_MOD 3
 
 typedef union epoll_data {
-	void *ptr;
 	int fd;
 	uint32_t u32;
 	uint64_t u64;

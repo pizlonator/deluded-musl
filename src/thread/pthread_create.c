@@ -278,6 +278,8 @@ int __pthread_create(pthread_t *restrict res, const pthread_attr_t *restrict att
 			+ libc.tls_size +  __pthread_tsd_size);
 	}
 
+	tsd = zgc_alloc(__pthread_tsd_size);
+
 	new = zgc_alloc(sizeof(struct pthread));
 	new->map_base = map;
 	new->map_size = size;

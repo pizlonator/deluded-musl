@@ -3,5 +3,5 @@
 
 ssize_t getrandom(void *buf, size_t buflen, unsigned flags)
 {
-	return syscall_cp(SYS_getrandom, buf, buflen, flags);
+	return zsys_getrandom(buf, buflen, flags);
 }

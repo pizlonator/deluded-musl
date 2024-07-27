@@ -161,7 +161,7 @@ obj/%.lo: $(srcdir)/%.c $(GENH) $(IMPH)
 
 lib/libc.so: $(LOBJS) $(LDSO_OBJS)
 	$(CC) $(CFLAGS_ALL) $(LDFLAGS_ALL) -shared \
-	-o $@ $(LOBJS) $(LDSO_OBJS) $(LIBCC) -nostdlib
+	-o $@ $(LOBJS) $(LDSO_OBJS) $(LIBCC) -nodefaultlibs
 
 $(EMPTY_LIBS):
 	rm -f $@

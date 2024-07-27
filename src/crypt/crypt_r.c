@@ -1,4 +1,5 @@
 #include <crypt.h>
+#include "yescrypt.h"
 
 char *__crypt_r(const char *key, const char *salt, struct crypt_data *data)
 {
@@ -16,6 +17,10 @@ char *__crypt_r(const char *key, const char *salt, struct crypt_data *data)
 			return __crypt_sha256(key, salt, output);
 		if (salt[1] == '6' && salt[2] == '$')
 			return __crypt_sha512(key, salt, output);
+		if ((salt[1] == '7' || salt[1] == 'y') && salt[2] == '$') {
+			/* our yescrypt() is thread-safe already. */
+			return yescrypt(key, salt);
+		}
 	}
 	return __crypt_des(key, salt, output);
 }

@@ -184,12 +184,13 @@ int getentropy(void *, size_t);
 extern int optreset;
 #endif
 
-#ifdef _GNU_SOURCE
-extern char **environ;
 int setresuid(uid_t, uid_t, uid_t);
 int setresgid(gid_t, gid_t, gid_t);
 int getresuid(uid_t *, uid_t *, uid_t *);
 int getresgid(gid_t *, gid_t *, gid_t *);
+
+#ifdef _GNU_SOURCE
+extern char **environ;
 char *get_current_dir_name(void);
 int syncfs(int);
 int euidaccess(const char *, int);

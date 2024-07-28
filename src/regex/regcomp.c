@@ -284,7 +284,7 @@ declare_popf(int, int);
       return _status;							      \
   }
 
-union tre_stack_item {
+struct tre_stack_item {
   void *voidptr_value;
   int int_value;
 };
@@ -294,7 +294,7 @@ struct tre_stack_rec {
   int max_size;
   int increment;
   int ptr;
-  union tre_stack_item *stack;
+  struct tre_stack_item *stack;
 };
 
 
@@ -334,7 +334,7 @@ tre_stack_num_objects(tre_stack_t *s)
 }
 
 static reg_errcode_t
-tre_stack_push(tre_stack_t *s, union tre_stack_item value)
+tre_stack_push(tre_stack_t *s, struct tre_stack_item value)
 {
   if (s->ptr < s->size)
     {
@@ -349,7 +349,7 @@ tre_stack_push(tre_stack_t *s, union tre_stack_item value)
 	}
       else
 	{
-	  union tre_stack_item *new_buffer;
+	  struct tre_stack_item *new_buffer;
 	  int new_size;
 	  new_size = s->size + s->increment;
 	  if (new_size > s->max_size)
@@ -370,7 +370,7 @@ tre_stack_push(tre_stack_t *s, union tre_stack_item value)
 
 #define define_pushf(typetag, type)  \
   declare_pushf(typetag, type) {     \
-    union tre_stack_item item;	     \
+    struct tre_stack_item item;	     \
     item.typetag ## _value = value;  \
     return tre_stack_push(s, item);  \
 }

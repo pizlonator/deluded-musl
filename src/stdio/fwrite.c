@@ -36,3 +36,12 @@ size_t fwrite(const void *restrict src, size_t size, size_t nmemb, FILE *restric
 }
 
 weak_alias(fwrite, fwrite_unlocked);
+
+size_t fwrite_znullify(const void* src, size_t size, size_t nmemb, FILE* f)
+{
+	void* tmp_buf = zgc_alloc(size * nmemb);
+	zmemmove_nullify(tmp_buf, src, size * nmemb);
+	size_t result = fwrite(tmp_buf, size, nmemb, f);
+	zgc_free(tmp_buf);
+	return result;
+}

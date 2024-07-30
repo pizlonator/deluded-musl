@@ -85,6 +85,9 @@ int fsetpos(FILE *, const fpos_t *);
 size_t fread(void *__restrict, size_t, size_t, FILE *__restrict);
 size_t fwrite(const void *__restrict, size_t, size_t, FILE *__restrict);
 
+size_t fread_znullify(void*, size_t, size_t, FILE*);
+size_t fwrite_znullify(const void*, size_t, size_t, FILE*);
+
 int fgetc(FILE *);
 int getc(FILE *);
 int getchar(void);

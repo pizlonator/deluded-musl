@@ -4,7 +4,7 @@
 #include <errno.h>
 #include "syscall.h"
 
-int fcntl(int fd, int cmd, ...)
+__attribute__((__noinline__)) int fcntl(int fd, int cmd, ...)
 {
 	return (int)zcall_int(zsys_fcntl, zargs());
 }

@@ -10,7 +10,7 @@
 #include "syscall.h"
 #include <stdfil.h>
 
-int ioctl(int fd, int req, ...)
+__attribute__((__noinline__)) int ioctl(int fd, int req, ...)
 {
 	return (int)zcall_int(zsys_ioctl, zargs());
 }

@@ -1,5 +1,6 @@
 #include "stdio_impl.h"
 #include "pthread_impl.h"
+#include <stdfil.h>
 
 int __lockfile(FILE *f)
 {

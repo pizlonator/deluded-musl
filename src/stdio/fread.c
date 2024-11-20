@@ -38,11 +38,3 @@ size_t fread(void *restrict destv, size_t size, size_t nmemb, FILE *restrict f)
 
 weak_alias(fread, fread_unlocked);
 
-size_t fread_znullify(void* dest, size_t size, size_t nmemb, FILE* f)
-{
-	void* tmp_buf = zgc_alloc(size * nmemb);
-	size_t result = fread(tmp_buf, size, nmemb, f);
-	zmemmove_nullify(dest, tmp_buf, result * size);
-	zgc_free(tmp_buf);
-	return result;
-}

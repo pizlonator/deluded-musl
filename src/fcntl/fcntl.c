@@ -6,5 +6,5 @@
 
 __attribute__((__noinline__)) int fcntl(int fd, int cmd, ...)
 {
-	return (int)zcall_int(zsys_fcntl, zargs());
+	return *(int*)zcall(zsys_fcntl, zargs());
 }

@@ -5,6 +5,7 @@
 #include <locale.h>
 #include <time.h>
 #include <limits.h>
+#include <ctype.h>
 #include "locale_impl.h"
 #include "time_impl.h"
 
@@ -48,6 +49,7 @@ const char *__strftime_fmt_1(char (*s)[100], size_t *l, int f, const struct tm *
 	long long val;
 	const char *fmt = "-";
 	int width = 2, def_pad = '0';
+	int do_tolower = 0;
 
 	switch (f) {
 	case 'a':
@@ -113,6 +115,8 @@ const char *__strftime_fmt_1(char (*s)[100], size_t *l, int f, const struct tm *
 	case 'n':
 		*l = 1;
 		return "\n";
+	case 'P':
+		do_tolower = 1;
 	case 'p':
 		item = tm->tm_hour >= 12 ? PM_STR : AM_STR;
 		goto nl_strcat;
@@ -188,6 +192,20 @@ const char *__strftime_fmt_1(char (*s)[100], size_t *l, int f, const struct tm *
 	case '%':
 		*l = 1;
 		return "%";
+	case 'k':
+		val = tm->tm_hour;
+		def_pad = '_';
+		width = 2;
+		goto number;
+	case 'l':
+		val = tm->tm_hour;
+		if (!val)
+			val = 12;
+		else if (val > 12)
+			val -= 12;
+		def_pad = '_';
+		width = 2;
+		goto number;
 	default:
 		return 0;
 	}
@@ -201,6 +219,14 @@ number:
 	return *s;
 nl_strcat:
 	fmt = __nl_langinfo_l(item, loc);
+	if (do_tolower) {
+		char* new_fmt = malloc(strlen(fmt) + 1);
+		size_t i;
+		/* OMG this is so wrong lmao. Should it, like, use ICU or something? */
+		for (i = 0; fmt[i]; ++i)
+			new_fmt[i] = tolower_l(fmt[i], loc);
+		fmt = new_fmt;
+	}
 string:
 	*l = strlen(fmt);
 	return fmt;

@@ -18,7 +18,7 @@ ssize_t fgetxattr(int filedes, const char *name, void *value, size_t size)
 
 ssize_t listxattr(const char *path, char *list, size_t size)
 {
-	return syscall(SYS_listxattr, path, list, size);
+	return zsys_listxattr(path, list, size);
 }
 
 ssize_t llistxattr(const char *path, char *list, size_t size)

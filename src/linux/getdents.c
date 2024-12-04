@@ -5,6 +5,5 @@
 
 int getdents(int fd, struct dirent *buf, size_t len)
 {
-	if (len>INT_MAX) len = INT_MAX;
-	return syscall(SYS_getdents, fd, buf, len);
+	return zsys_getdents(fd, buf, len);
 }

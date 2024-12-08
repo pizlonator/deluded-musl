@@ -163,8 +163,7 @@ void __qsort_r(void *base, size_t nel, size_t width, cmpfun cmp, void *arg)
 
 	if (!size) return;
 
-        tmp = malloc(width);
-        ZASSERT(tmp);
+        tmp = zgc_alloc(width);
 
 	head = base;
 	high = head + size - width;
@@ -216,8 +215,6 @@ void __qsort_r(void *base, size_t nel, size_t width, cmpfun cmp, void *arg)
 		}
 		head -= width;
 	}
-
-        zgc_free(tmp);
 }
 
 weak_alias(__qsort_r, qsort_r);

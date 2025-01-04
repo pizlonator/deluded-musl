@@ -56,7 +56,7 @@ extern "C" {
 
 
 #define PTHREAD_MUTEX_INITIALIZER {{{0}}, {0}}
-#define PTHREAD_RWLOCK_INITIALIZER {{{0}}, {0}}
+#define PTHREAD_RWLOCK_INITIALIZER {{{0}}}
 #define PTHREAD_COND_INITIALIZER {{{0}}, {0}}
 #define PTHREAD_ONCE_INIT 0
 

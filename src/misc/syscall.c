@@ -74,6 +74,10 @@ long syscall(long n, ...)
 	case SYS_gettid:
 		return __pthread_self()->tid;
 
+	case SYS_getrandom:
+		callee = zsys_getrandom;
+		break;
+
 	/* FIXME: Implement more syscalls! */
 
 	default:

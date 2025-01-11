@@ -3,5 +3,5 @@
 
 int flock(int fd, int op)
 {
-	return syscall(SYS_flock, fd, op);
+	return zsys_flock(fd, op);
 }

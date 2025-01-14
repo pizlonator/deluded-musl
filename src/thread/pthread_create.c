@@ -322,6 +322,7 @@ int __pthread_create(pthread_t *restrict res, const pthread_attr_t *restrict att
 	if (zthread) {
 		unsigned new_tid = zthread_get_id(zthread);
 		ZASSERT(!new->tid || new->tid == new_tid);
+                new->zthread = zthread;
 		new->tid = new_tid;
 		ret = 0;
 	} else {

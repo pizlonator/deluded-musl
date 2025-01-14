@@ -34,6 +34,7 @@ struct pthread {
 #endif
 
 	/* Part 2 -- implementation details, non-ABI. */
+	void* zthread;
 	int tid;
 	int errno_val;
 	volatile int detach_state;

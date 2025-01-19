@@ -212,6 +212,9 @@ int __libc_current_sigrtmax(void);
 
 int kill(pid_t, int);
 
+extern int libc_internal_signals[];
+extern unsigned num_libc_internal_signals;
+
 int sigemptyset(sigset_t *);
 int sigfillset(sigset_t *);
 int sigaddset(sigset_t *, int);
@@ -297,10 +300,6 @@ int raise(int);
 __REDIR(sigtimedwait, __sigtimedwait_time64);
 #endif
 #endif
-
-#define SIGTIMER 32
-#define SIGCANCEL 33
-#define SIGSYNCCALL 34
 
 #ifdef __cplusplus
 }

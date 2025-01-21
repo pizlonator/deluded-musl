@@ -50,7 +50,7 @@ static inline void unlock_requeue(volatile int *l, volatile int *r, int w)
 {
 	a_store(l, 0);
 	if (w) __wake(l, 1, 1);
-	else futex_requeue(l, 1, 0, 1, r);
+	else yolo_futex_requeue(l, 1, 0, 1, r);
 }
 
 enum {

@@ -1,21 +1,21 @@
 #include "pthread_impl.h"
 
-void futex_wake(volatile int *addr, int cnt, int priv)
+void yolo_futex_wake(volatile int *addr, int cnt, int priv)
 {
 	__wake(addr, cnt, priv);
 }
 
-void futex_wait(volatile int *addr, int val, int priv)
+void yolo_futex_wait(volatile int *addr, int val, int priv)
 {
 	__futexwait(addr, val, priv);
 }
 
-int futex_timedwait(volatile int *addr, int val, int clock_id, const struct timespec *timeout, int priv)
+int yolo_futex_timedwait(volatile int *addr, int val, int clock_id, const struct timespec *timeout, int priv)
 {
 	return __timedwait(addr, val, clock_id, timeout, priv);
 }
 
-int futex_unlock_pi(volatile int *addr, int priv)
+int yolo_futex_unlock_pi(volatile int *addr, int priv)
 {
 	if (priv) priv = FUTEX_PRIVATE;
 	return __syscall(SYS_futex, addr, FUTEX_UNLOCK_PI|priv);
@@ -39,13 +39,13 @@ static int __futex4(volatile void *addr, int op, int val, const struct timespec 
 	return __syscall(SYS_futex, addr, op, val, to);
 }
 
-int futex_lock_pi(volatile int *addr, int priv, const struct timespec *timeout)
+int yolo_futex_lock_pi(volatile int *addr, int priv, const struct timespec *timeout)
 {
 	if (priv) priv = FUTEX_PRIVATE;
 	return __futex4(addr, FUTEX_LOCK_PI|priv, 0, timeout);
 }
 
-void futex_requeue(volatile int *addr, int priv, int wake_count, int requeue_count, volatile int *addr2)
+void yolo_futex_requeue(volatile int *addr, int priv, int wake_count, int requeue_count, volatile int *addr2)
 {
 	if (priv) priv = FUTEX_PRIVATE;
 	__syscall(SYS_futex, addr, FUTEX_REQUEUE|priv, wake_count, requeue_count, addr2) != -ENOSYS

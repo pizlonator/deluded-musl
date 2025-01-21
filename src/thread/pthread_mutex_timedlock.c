@@ -10,7 +10,7 @@ static int pthread_mutex_timedlock_pi(pthread_mutex_t *restrict m, const struct 
 
 	if (!priv) self->robust_list.pending = &m->_m_next;
 
-	do e = -futex_lock_pi(&m->_m_lock, priv, at);
+	do e = -yolo_futex_lock_pi(&m->_m_lock, priv, at);
 	while (e==EINTR);
 	if (e) self->robust_list.pending = 0;
 

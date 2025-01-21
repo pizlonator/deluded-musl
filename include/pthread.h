@@ -238,9 +238,6 @@ __REDIR(pthread_timedjoin_np, __pthread_timedjoin_np_time64);
 #endif
 #endif
 
-void* pthread_getstack_yolo(pthread_t);
-size_t pthread_getstacksize_yolo(pthread_t);
-
 #ifdef __cplusplus
 }
 #endif

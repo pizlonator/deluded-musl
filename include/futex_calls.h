@@ -1,5 +1,5 @@
-#ifndef _FUTEX_H_
-#define _FUTEX_H_
+#ifndef _FUTEX_CALLS_H_
+#define _FUTEX_CALLS_H_
 
 #define __NEED_struct_timespec
 
@@ -14,5 +14,5 @@ int futex_unlock_pi(volatile int *addr, int priv);
 int futex_lock_pi(volatile int *addr, int priv, const struct timespec *timeout);
 int futex_requeue(volatile int *addr, int priv, int wake_count, int requeue_count, volatile int *addr2);
 
-#endif /* _FUTEX_H_ */
+#endif /* _FUTEX_CALLS_H_ */
 

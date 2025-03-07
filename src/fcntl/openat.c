@@ -12,6 +12,6 @@ int openat(int fd, const char *filename, int flags, ...)
 		mode = va_arg(ap, mode_t);
 		va_end(ap);
 	}
-
-	return syscall_cp(SYS_openat, fd, filename, flags|O_LARGEFILE, mode);
+	
+	return zsys_openat(fd, filename, flags, mode);
 }

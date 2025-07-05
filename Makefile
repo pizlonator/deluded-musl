@@ -68,7 +68,7 @@ CRT_LIBS = $(addprefix lib/,$(notdir $(CRT_OBJS)))
 STATIC_LIBS = lib/libc.a
 SHARED_LIBS = lib/libc.so
 TOOL_LIBS = lib/musl-gcc.specs
-ALL_LIBS = $(SHARED_LIBS) $(EMPTY_LIBS) $(TOOL_LIBS)
+ALL_LIBS = $(STATIC_LIBS) $(SHARED_LIBS) $(EMPTY_LIBS) $(TOOL_LIBS)
 ALL_TOOLS = obj/musl-gcc
 
 WRAPCC_GCC = gcc
@@ -163,6 +163,11 @@ lib/libc.so: $(LOBJS) $(LDSO_OBJS)
 	$(CC) $(CFLAGS_ALL) $(LDFLAGS_ALL) -shared \
 	-o $@ $(LOBJS) $(LDSO_OBJS) $(LIBCC) -nodefaultlibs
 
+lib/libc.a: $(AOBJS)
+	rm -f $@
+	$(AR) rc $@ $(AOBJS)
+	$(RANLIB) $@
+
 $(EMPTY_LIBS):
 	rm -f $@
 	$(AR) rc $@
@@ -223,7 +228,6 @@ endif
 
 clean:
 	rm -rf obj lib
-	rm -f lib/libc.so
 
 distclean: clean
 	rm -f config.mak

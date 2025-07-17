@@ -8,5 +8,5 @@ int timer_getoverrun(timer_t t)
 		pthread_t td = (void *)((uintptr_t)t << 1);
 		t = (void *)(uintptr_t)(td->timer_id & INT_MAX);
 	}
-	return zsys_timer_getoverrun(t);
+	return zsys_timer_getoverrun((intptr_t)t);
 }

@@ -8,5 +8,5 @@ int timer_gettime(timer_t t, struct itimerspec *val)
 		pthread_t td = (void *)((uintptr_t)t << 1);
 		t = (void *)(uintptr_t)(td->timer_id & INT_MAX);
 	}
-	return zsys_timer_gettime(t, val);
+	return zsys_timer_gettime((intptr_t)t, val);
 }

@@ -10,5 +10,5 @@ int timer_settime(timer_t t, int flags, const struct itimerspec *restrict val, s
 		pthread_t td = (void *)((uintptr_t)t << 1);
 		t = (void *)(uintptr_t)(td->timer_id & INT_MAX);
 	}
-	return zsys_timer_settime(t, flags, val, old);
+	return zsys_timer_settime((intptr_t)t, flags, val, old);
 }

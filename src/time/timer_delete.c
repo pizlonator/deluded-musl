@@ -10,5 +10,5 @@ int timer_delete(timer_t t)
 		zthread_kill(td->zthread, SIGTIMER);
 		return 0;
 	}
-	return zsys_timer_delete(t);
+	return zsys_timer_delete((intptr_t)t);
 }

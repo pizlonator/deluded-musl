@@ -57,7 +57,7 @@ static void *start(void *arg)
 		}
 		if (self->timer_id < 0) break;
 	}
-	__syscall(SYS_timer_delete, self->timer_id & INT_MAX);
+        zsys_timer_delete(self->timer_id & INT_MAX);
 	return 0;
 }
 

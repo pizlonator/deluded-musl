@@ -123,7 +123,7 @@ enum {
 #define tls_mod_off_t size_t
 #endif
 
-#define SIGTIMER 32
+#define SIGTIMER 35
 #define SIGCANCEL 33
 #define SIGSYNCCALL 34
 
@@ -131,9 +131,6 @@ enum {
 #define SIGPT_SET \
 	((sigset_t *)(const unsigned long [_NSIG/8/sizeof(long)]){ \
 	[sizeof(long)==4] = 3UL<<(32*(sizeof(long)>4)) })
-#define SIGTIMER_SET \
-	((sigset_t *)(const unsigned long [_NSIG/8/sizeof(long)]){ \
-	 0x80000000 })
 
 int __sigdelsetyolo(sigset_t *, int);
 

@@ -44,8 +44,10 @@ FILE *__fdopen(int fd, const char *mode)
 
 	/* Activate line buffered mode for terminals */
 	f->lbf = EOF;
+        int saved_errno = errno;
 	if (!(f->flags & F_NOWR) && !zsys_ioctl(fd, TIOCGWINSZ, &wsz))
 		f->lbf = '\n';
+        errno = saved_errno;
 
 	/* Initialize op ptrs. No problem if some are unneeded. */
 	f->read = __stdio_read;
